@@ -11,9 +11,6 @@ body {
 }
 
 main {
-  /* display: flex;
-  flex-wrap: wrap;
-  flex-grow: 2; */
   display: grid;
   grid-template-columns: repeat(auto-fill, 300px);
   gap: 30px;
