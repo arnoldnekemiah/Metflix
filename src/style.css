@@ -75,6 +75,7 @@ img {
 
 .commentLike {
   display: flex;
+  gap: 20px;
 }
 
 footer {
