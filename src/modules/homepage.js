@@ -53,22 +53,47 @@ const displayMovies = (AllData, actionData, dramaData, comedyData, romanceData) 
 
   allBtn.addEventListener('click', () => {
     displayMoviesByGenre(AllData);
+    allBtn.style.backgroundColor = 'grey';
+    comedyBtn.style.backgroundColor = '';
+    actionBtn.style.backgroundColor = '';
+    romanceBtn.style.backgroundColor = '';
+    dramaBtn.style.backgroundColor = '';
   });
 
   dramaBtn.addEventListener('click', () => {
     displayMoviesByGenre(dramaData);
+    allBtn.style.backgroundColor = '';
+    comedyBtn.style.backgroundColor = '';
+    actionBtn.style.backgroundColor = '';
+    romanceBtn.style.backgroundColor = '';
+    dramaBtn.style.backgroundColor = 'grey';
   });
 
   actionBtn.addEventListener('click', () => {
     displayMoviesByGenre(actionData);
+    allBtn.style.backgroundColor = '';
+    comedyBtn.style.backgroundColor = '';
+    actionBtn.style.backgroundColor = 'grey';
+    romanceBtn.style.backgroundColor = '';
+    dramaBtn.style.backgroundColor = '';
   });
 
   comedyBtn.addEventListener('click', () => {
     displayMoviesByGenre(comedyData);
+    allBtn.style.backgroundColor = '';
+    comedyBtn.style.backgroundColor = 'grey';
+    actionBtn.style.backgroundColor = '';
+    romanceBtn.style.backgroundColor = '';
+    dramaBtn.style.backgroundColor = '';
   });
 
   romanceBtn.addEventListener('click', () => {
     displayMoviesByGenre(romanceData);
+    allBtn.style.backgroundColor = '';
+    comedyBtn.style.backgroundColor = '';
+    actionBtn.style.backgroundColor = '';
+    romanceBtn.style.backgroundColor = 'grey';
+    dramaBtn.style.backgroundColor = '';
   });
 
   // Display all movies initially
