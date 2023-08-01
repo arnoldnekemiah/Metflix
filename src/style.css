@@ -1,3 +1,8 @@
+main {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 h1 {
   background-color: burlywood;
 }
@@ -7,5 +12,5 @@ h4 {
 }
 
 img {
-  height: 40px;
+  height: 400px;
 }
