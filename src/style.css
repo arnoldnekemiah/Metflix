@@ -4,9 +4,21 @@
   box-sizing: border-box;
 }
 
+footer {
+  padding: 2rem;
+  background-color: turquoise;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 main {
   display: flex;
   flex-wrap: wrap;
+  flex-grow: 2;
 }
 
 h1 {
