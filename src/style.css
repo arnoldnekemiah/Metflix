@@ -11,9 +11,14 @@ body {
 }
 
 main {
-  display: flex;
+  /* display: flex;
   flex-wrap: wrap;
-  flex-grow: 2;
+  flex-grow: 2; */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
+  gap: 30px;
+  justify-content: center;
+  margin-top: 5rem;
 }
 
 header {
@@ -64,6 +69,15 @@ h1 {
 
 img {
   height: 400px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+}
+
+.commentLike {
+  display: flex;
 }
 
 footer {
