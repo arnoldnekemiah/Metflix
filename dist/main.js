@@ -2,6 +2,76 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/index.js":
+/*!**********************!*\
+  !*** ./src/index.js ***!
+  \**********************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ "./src/style.css");
+/* harmony import */ var _assets_bin_svgrepo_com_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./assets/bin-svgrepo-com.svg */ "./src/assets/bin-svgrepo-com.svg");
+
+
+
+// THESE LINES WILL BE DELETED IN FUTURE, IT'S JUST A TEST OF API
+// SOME OF THE CODE MIGHT BE MODIFIED, REFACTORED AND REUSED IN MODULE FILES
+
+// a function that gives the array of movies (with properties like 'name', 'genre', 'image')
+const getData = async genreURL => {
+  const response = await fetch(genreURL, {
+    method: 'GET'
+  });
+  return response.json();
+};
+
+// we can provide URL to search movies array by keywords
+const COMEDY_URL = 'https://api.tvmaze.com/search/shows?q=comedy';
+const ACTION_URL = 'https://api.tvmaze.com/search/shows?q=action';
+const DRAMA_URL = 'https://api.tvmaze.com/search/shows?q=drama';
+// we can see the data (array of movies) in browser py pasting: https://api.tvmaze.com/search/shows?q=comedy
+
+// we retrieve this data (array of movies) by calling getData function
+let comedyData = await getData(COMEDY_URL);
+let actionData = await getData(ACTION_URL);
+let dramaData = await getData(DRAMA_URL);
+
+// we might want to sort the retrieved data because sometimes keywords appear in the name or
+// location of the movie (instead of the genre)
+comedyData = comedyData.filter(el => el.show.genres.includes('Comedy'));
+actionData = actionData.filter(el => el.show.genres.includes('Action'));
+dramaData = dramaData.filter(el => el.show.genres.includes('Drama'));
+
+// we can create an array from retrieved data
+const data = [comedyData, actionData, dramaData];
+
+// and we can display all movies (but of course in future we'll display depending on which
+// link the user clicked in navbar)
+data.forEach(dataByGenre => {
+  dataByGenre.forEach(movie => {
+    const container = document.querySelector('main');
+    const movieCard = document.createElement('div');
+    const movieTitle = document.createElement('h2');
+    const movieImage = document.createElement('img');
+    movieTitle.textContent = movie.show.name;
+    if (movie.show.image) {
+      movieImage.src = movie.show.image.medium;
+    } else {
+      // API provides images for most movies, but in case the image is not found we want to
+      // include some sample image saying "The poster will be added soon"
+      movieImage.src = _assets_bin_svgrepo_com_svg__WEBPACK_IMPORTED_MODULE_1__;
+    }
+    movieCard.appendChild(movieTitle);
+    movieCard.appendChild(movieImage);
+    container.appendChild(movieCard);
+  });
+});
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } }, 1);
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js!./src/style.css":
 /*!*************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js!./src/style.css ***!
@@ -21,14 +91,80 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, `h1 {
+___CSS_LOADER_EXPORT___.push([module.id, `* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 2;
+}
+
+header {
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+.desktop-menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  width: auto;
+  height: 40px;
+}
+
+.categories {
+  display: flex;
+  gap: 3rem;
+}
+
+.categories .btn {
+  list-style: none;
+}
+
+.categories .btn a {
+  color: black;
+  text-decoration: none;
+}
+
+
+.btn:hover {
+  background-color: aqua;
+}
+
+
+
+h1 {
   background-color: burlywood;
 }
 
-h4 {
-  background-color: aqua;
+img {
+  height: 400px;
 }
-`, "",{"version":3,"sources":["webpack://./src/style.css"],"names":[],"mappings":"AAAA;EACE,2BAA2B;AAC7B;;AAEA;EACE,sBAAsB;AACxB","sourcesContent":["h1 {\r\n  background-color: burlywood;\r\n}\r\n\r\nh4 {\r\n  background-color: aqua;\r\n}\r\n"],"sourceRoot":""}]);
+
+footer {
+  padding: 2rem;
+  background-color: turquoise;
+}`, "",{"version":3,"sources":["webpack://./src/style.css"],"names":[],"mappings":"AAAA;EACE,SAAS;EACT,UAAU;EACV,sBAAsB;AACxB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,iBAAiB;AACnB;;AAEA;EACE,aAAa;EACb,eAAe;EACf,YAAY;AACd;;AAEA;EACE,gBAAgB;EAChB,aAAa;EACb,8BAA8B;EAC9B,kBAAkB;EAClB,uCAAuC;EACvC,gBAAgB;EAChB,MAAM;EACN,YAAY;AACd;;AAEA;EACE,aAAa;EACb,uBAAuB;EACvB,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,WAAW;EACX,YAAY;AACd;;AAEA;EACE,aAAa;EACb,SAAS;AACX;;AAEA;EACE,gBAAgB;AAClB;;AAEA;EACE,YAAY;EACZ,qBAAqB;AACvB;;;AAGA;EACE,sBAAsB;AACxB;;;;AAIA;EACE,2BAA2B;AAC7B;;AAEA;EACE,aAAa;AACf;;AAEA;EACE,aAAa;EACb,2BAA2B;AAC7B","sourcesContent":["* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\nbody {\n  display: flex;\n  flex-direction: column;\n  min-height: 100vh;\n}\n\nmain {\n  display: flex;\n  flex-wrap: wrap;\n  flex-grow: 2;\n}\n\nheader {\n  background: #fff;\n  display: flex;\n  justify-content: space-between;\n  padding: 1rem 1rem;\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n  position: sticky;\n  top: 0;\n  z-index: 999;\n}\n\n.desktop-menu {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.logo {\n  display: flex;\n  width: auto;\n  height: 40px;\n}\n\n.categories {\n  display: flex;\n  gap: 3rem;\n}\n\n.categories .btn {\n  list-style: none;\n}\n\n.categories .btn a {\n  color: black;\n  text-decoration: none;\n}\n\n\n.btn:hover {\n  background-color: aqua;\n}\n\n\n\nh1 {\n  background-color: burlywood;\n}\n\nimg {\n  height: 400px;\n}\n\nfooter {\n  padding: 2rem;\n  background-color: turquoise;\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -512,6 +648,75 @@ module.exports = __webpack_require__.p + "bin-svgrepo-com.svg";
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/async module */
+/******/ 	(() => {
+/******/ 		var webpackQueues = typeof Symbol === "function" ? Symbol("webpack queues") : "__webpack_queues__";
+/******/ 		var webpackExports = typeof Symbol === "function" ? Symbol("webpack exports") : "__webpack_exports__";
+/******/ 		var webpackError = typeof Symbol === "function" ? Symbol("webpack error") : "__webpack_error__";
+/******/ 		var resolveQueue = (queue) => {
+/******/ 			if(queue && queue.d < 1) {
+/******/ 				queue.d = 1;
+/******/ 				queue.forEach((fn) => (fn.r--));
+/******/ 				queue.forEach((fn) => (fn.r-- ? fn.r++ : fn()));
+/******/ 			}
+/******/ 		}
+/******/ 		var wrapDeps = (deps) => (deps.map((dep) => {
+/******/ 			if(dep !== null && typeof dep === "object") {
+/******/ 				if(dep[webpackQueues]) return dep;
+/******/ 				if(dep.then) {
+/******/ 					var queue = [];
+/******/ 					queue.d = 0;
+/******/ 					dep.then((r) => {
+/******/ 						obj[webpackExports] = r;
+/******/ 						resolveQueue(queue);
+/******/ 					}, (e) => {
+/******/ 						obj[webpackError] = e;
+/******/ 						resolveQueue(queue);
+/******/ 					});
+/******/ 					var obj = {};
+/******/ 					obj[webpackQueues] = (fn) => (fn(queue));
+/******/ 					return obj;
+/******/ 				}
+/******/ 			}
+/******/ 			var ret = {};
+/******/ 			ret[webpackQueues] = x => {};
+/******/ 			ret[webpackExports] = dep;
+/******/ 			return ret;
+/******/ 		}));
+/******/ 		__webpack_require__.a = (module, body, hasAwait) => {
+/******/ 			var queue;
+/******/ 			hasAwait && ((queue = []).d = -1);
+/******/ 			var depQueues = new Set();
+/******/ 			var exports = module.exports;
+/******/ 			var currentDeps;
+/******/ 			var outerResolve;
+/******/ 			var reject;
+/******/ 			var promise = new Promise((resolve, rej) => {
+/******/ 				reject = rej;
+/******/ 				outerResolve = resolve;
+/******/ 			});
+/******/ 			promise[webpackExports] = exports;
+/******/ 			promise[webpackQueues] = (fn) => (queue && fn(queue), depQueues.forEach(fn), promise["catch"](x => {}));
+/******/ 			module.exports = promise;
+/******/ 			body((deps) => {
+/******/ 				currentDeps = wrapDeps(deps);
+/******/ 				var fn;
+/******/ 				var getResult = () => (currentDeps.map((d) => {
+/******/ 					if(d[webpackError]) throw d[webpackError];
+/******/ 					return d[webpackExports];
+/******/ 				}))
+/******/ 				var promise = new Promise((resolve) => {
+/******/ 					fn = () => (resolve(getResult));
+/******/ 					fn.r = 0;
+/******/ 					var fnQueue = (q) => (q !== queue && !depQueues.has(q) && (depQueues.add(q), q && !q.d && (fn.r++, q.push(fn))));
+/******/ 					currentDeps.map((dep) => (dep[webpackQueues](fnQueue)));
+/******/ 				});
+/******/ 				return fn.r ? promise : getResult();
+/******/ 			}, (err) => ((err ? reject(promise[webpackError] = err) : outerResolve(exports)), resolveQueue(queue)));
+/******/ 			queue && queue.d < 0 && (queue.d = 0);
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
@@ -593,25 +798,12 @@ module.exports = __webpack_require__.p + "bin-svgrepo-com.svg";
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ "./src/style.css");
-/* harmony import */ var _assets_bin_svgrepo_com_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./assets/bin-svgrepo-com.svg */ "./src/assets/bin-svgrepo-com.svg");
-
-
-const myPara = document.createElement('h4');
-myPara.textContent = "Is JS working?";
-const myImg = document.createElement('img');
-myImg.src = _assets_bin_svgrepo_com_svg__WEBPACK_IMPORTED_MODULE_1__;
-document.body.appendChild(myPara);
-document.body.appendChild(myImg);
-})();
-
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module used 'module' so it can't be inlined
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/index.js");
+/******/ 	
 /******/ })()
 ;
 //# sourceMappingURL=main.js.map
