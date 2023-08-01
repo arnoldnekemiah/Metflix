@@ -38,7 +38,6 @@ const data = [comedyData, actionData, dramaData];
 // and we can display all movies (but of course in future we'll display depending on which
 // link the user clicked in navbar)
 data.forEach((dataByGenre) => {
-
   dataByGenre.forEach((movie) => {
     const container = document.querySelector('main');
     const movieCard = document.createElement('div');
