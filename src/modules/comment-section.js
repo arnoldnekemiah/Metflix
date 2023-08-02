@@ -44,7 +44,15 @@ const commentSection = async (id) => {
       document.getElementById('user-message').value = '';
     }
   });
-  
+
+  userName.addEventListener('keyup', () => {
+    nameError.classList.remove('show');
+  });
+
+  userComment.addEventListener('keyup', () => {
+    commentError.classList.remove('show');
+  });
+
   addComment.append(userName, nameError, userComment, commentError, commentBtn);
   commentSection.append(commentTitle, commentHistory, addComment);
   popup.appendChild(commentSection);
