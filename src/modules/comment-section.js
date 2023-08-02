@@ -2,7 +2,7 @@ import getComments from './get-comments.js';
 import renderComments from './render-comments.js';
 import postComment from './post-comment.js';
 import showError from './show-error.js';
-import commentCounter from "./comment-counter.js";
+import commentCounter from './comment-counter.js';
 
 const commentSection = async (id) => {
   const popup = document.querySelector('.active-popup');
@@ -65,7 +65,7 @@ const commentSection = async (id) => {
   popup.appendChild(commentSection);
 
   renderComments(commentData);
-  
+
   const commentCount = commentCounter();
   commentTitle.textContent += ` (${commentCount})`;
 };
