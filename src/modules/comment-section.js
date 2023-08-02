@@ -65,6 +65,9 @@ const commentSection = async (id) => {
   popup.appendChild(commentSection);
 
   renderComments(commentData);
+  
+  const commentCount = commentCounter();
+  commentTitle.textContent += ` (${commentCount})`;
 };
 
 export default commentSection;
