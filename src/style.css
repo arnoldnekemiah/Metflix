@@ -48,11 +48,11 @@ header {
   gap: 3rem;
 }
 
-.categories .navlink  {
+.categories .navlink {
   list-style: none;
 }
 
-.categories .navlink  a {
+.categories .navlink a {
   color: black;
   text-decoration: none;
 }
