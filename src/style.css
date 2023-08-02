@@ -159,3 +159,58 @@ footer {
 .hidden {
   display: none;
 }
+
+.comment-section {
+  width: 50%;
+}
+
+.comment-section * {
+  margin-top: 1rem;
+  display: block;
+}
+
+.comment-section *::placeholder {
+  font-family: monospace;
+}
+
+.comment-section input {
+  width: 300px;
+  padding: 0.3rem;
+  color: #222121;
+  height: 1.5rem;
+}
+
+.comment-section textarea {
+  width: 300px;
+  padding: 0.3rem;
+  color: #222121;
+  height: 4rem;
+}
+
+.comment-section button {
+  width: 300px;
+  border: none;
+  background-color: #504e4e;
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+}
+
+.comment-section button:hover {
+  background-color: #3b3838;
+  cursor: pointer;
+}
+
+.comment-history {
+  display: flex;
+  flex-direction: column;
+}
+
+#name-error,
+#comment-error {
+  opacity: 0;
+}
+
+#name-error.show,
+#comment-error.show {
+  opacity: 1;
+}
