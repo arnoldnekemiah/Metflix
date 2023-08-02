@@ -24,7 +24,7 @@ describe('count number of comments', () => {
     // assert
     expect(comments).toBe(1);
   });
-  test('should output 1', () => {
+  test('should output 0', () => {
     // arrange
     document.body.innerHTML = '<ul>'
     + '</ul>';
@@ -33,4 +33,4 @@ describe('count number of comments', () => {
     // assert
     expect(comments).toBe(0);
   });
-})
+});
