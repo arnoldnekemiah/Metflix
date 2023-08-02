@@ -1,3 +1,6 @@
+import postComment from "./post-comment.js";
+import showError from "./show-error.js";
+
 const commentSection = async (id) => {
   const popup = document.querySelector('.active-popup');
   const commentSection = document.createElement('div');
