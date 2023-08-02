@@ -1,5 +1,5 @@
-import postComment from "./post-comment.js";
-import showError from "./show-error.js";
+import postComment from './post-comment.js';
+import showError from './show-error.js';
 
 const commentSection = async (id) => {
   const popup = document.querySelector('.active-popup');
@@ -13,7 +13,7 @@ const commentSection = async (id) => {
   const userComment = document.createElement('textarea');
   const commentError = document.createElement('span');
   const commentBtn = document.createElement('button');
-  
+
   commentSection.classList.add('comment-section');
   addComment.classList.add('add-comment');
   commentHistory.classList.add('comment-history');
@@ -23,10 +23,10 @@ const commentSection = async (id) => {
   commentTitle.textContent = 'Comments';
   userName.id = 'user-name';
   userName.type = 'text';
-  userName.placeholder = "Your name";
+  userName.placeholder = 'Your name';
   userComment.id = 'user-message';
-  userComment.placeholder = "Your insights";
-  commentBtn.textContent = "Comment";
+  userComment.placeholder = 'Your insights';
+  commentBtn.textContent = 'Comment';
 
   commentBtn.addEventListener('click', async (event) => {
     event.preventDefault();
@@ -56,6 +56,6 @@ const commentSection = async (id) => {
   addComment.append(userName, nameError, userComment, commentError, commentBtn);
   commentSection.append(commentTitle, commentHistory, addComment);
   popup.appendChild(commentSection);
-}
+};
 
 export default commentSection;
