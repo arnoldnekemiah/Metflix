@@ -10,6 +10,10 @@ body {
   min-height: 100vh;
 }
 
+body.black {
+  background-color: #222121;
+}
+
 main {
   display: grid;
   grid-template-columns: repeat(auto-fill, 300px);
@@ -24,7 +28,7 @@ header {
   display: flex;
   justify-content: space-between;
   padding: 1rem 1rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px #0000001a;
   position: sticky;
   top: 0;
   z-index: 999;
@@ -82,4 +86,76 @@ img {
 footer {
   padding: 2rem;
   background-color: turquoise;
+}
+
+.active-popup {
+  background-color: #222121;
+  margin: 5% 15%;
+  padding: 8% 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  position: relative;
+  border: 2px solid rgb(163, 12, 12);
+}
+
+.active-popup * {
+  color: white;
+}
+
+.active-popup #close-btn {
+  all: unset;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+}
+
+.active-popup .info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 60%;
+}
+
+.active-popup .info p:nth-child(4) {
+  width: 100%;
+}
+
+.active-popup > img {
+  height: auto;
+  width: 60%;
+}
+
+.active-popup button img {
+  height: 2rem;
+  width: 2rem;
+}
+
+.active-popup h2,
+.active-popup .score {
+  font-size: 1.5rem;
+}
+
+.active-popup ul {
+  list-style: none;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+}
+
+.active-popup ul li {
+  background-color: #504e4e;
+  padding: 0.4rem 1rem;
+}
+
+.active-popup ul li:hover {
+  background-color: #3b3838;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
 }

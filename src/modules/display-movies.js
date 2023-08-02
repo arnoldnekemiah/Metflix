@@ -1,4 +1,5 @@
 import coming from '../assets/coming-soon.jpg';
+import renderPopup from './render-popup.js';
 // Function to display movies based on the selected genre
 const displayMovies = (movieArray) => {
   const container = document.querySelector('main');
@@ -39,6 +40,14 @@ const displayMovies = (movieArray) => {
     buttonsDiv.appendChild(likeBtn);
     buttonsDiv.appendChild(commentBtn);
     movieCard.appendChild(buttonsDiv);
+
+    commentBtn.addEventListener('click', () => {
+      // hideContent();
+      const pageContent = document.querySelectorAll('header, main, footer');
+      pageContent.forEach((element) => element.classList.add('hidden'));
+      document.body.classList.add('black');
+      renderPopup(movie);
+    });
   });
 };
 
