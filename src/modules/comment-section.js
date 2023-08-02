@@ -1,5 +1,5 @@
-import getComments from "./get-comments.js";
-import renderComments from "./render-comments.js";
+import getComments from './get-comments.js';
+import renderComments from './render-comments.js';
 import postComment from './post-comment.js';
 import showError from './show-error.js';
 
