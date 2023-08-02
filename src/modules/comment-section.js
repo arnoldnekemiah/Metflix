@@ -28,6 +28,23 @@ const commentSection = async (id) => {
   userComment.placeholder = "Your insights";
   commentBtn.textContent = "Comment";
 
+  commentBtn.addEventListener('click', async (event) => {
+    event.preventDefault();
+    const name = document.getElementById('user-name').value;
+    const message = document.getElementById('user-message').value;
+
+    if (name === '') {
+      showError('name', 'Please, enter your name');
+    } else if (message === '') {
+      showError('comment', 'Please, enter your message');
+    } else if (name && message !== '') {
+      await postComment(id, name, message);
+
+      document.getElementById('user-name').value = '';
+      document.getElementById('user-message').value = '';
+    }
+  });
+  
   addComment.append(userName, nameError, userComment, commentError, commentBtn);
   commentSection.append(commentTitle, commentHistory, addComment);
   popup.appendChild(commentSection);
