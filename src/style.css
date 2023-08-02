@@ -203,6 +203,11 @@ footer {
   flex-direction: column;
 }
 
+.single-comment {
+  display: flex;
+  gap: 1rem;
+}
+
 #name-error,
 #comment-error {
   opacity: 0;
