@@ -36,7 +36,14 @@ const renderPopup = (movieInfo) => {
   }
 
   closeBtn.appendChild(closeImg);
-
+  closeBtn.addEventListener('click', () => {
+    movieCard.remove();
+    // showContent();
+    const pageContent = document.querySelectorAll('header, main, footer');
+    pageContent.forEach((element) => element.classList.remove('hidden'));
+    document.body.classList.remove('black');
+  });
+  
   infoDiv.append(title, score, genres, lang, premiere);
   movieCard.append(closeBtn, image, infoDiv);
   infoDiv.innerHTML += movieInfo.show.summary;
