@@ -43,7 +43,7 @@ const renderPopup = (movieInfo) => {
     pageContent.forEach((element) => element.classList.remove('hidden'));
     document.body.classList.remove('black');
   });
-  
+
   infoDiv.append(title, score, genres, lang, premiere);
   movieCard.append(closeBtn, image, infoDiv);
   infoDiv.innerHTML += movieInfo.show.summary;
