@@ -91,7 +91,8 @@ footer {
 .active-popup {
   background-color: #222121;
   margin: 5% 15%;
-  padding: 8% 5%;
+  padding: 4rem 5% 4%;
+  max-width: 700px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -116,7 +117,8 @@ footer {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 1rem;
-  width: 60%;
+  width: 100%;
+  max-width: 300px;
 }
 
 .active-popup .info p:nth-child(4) {
@@ -125,7 +127,8 @@ footer {
 
 .active-popup > img {
   height: auto;
-  width: 60%;
+  width: 100%;
+  max-width: 300px;
 }
 
 .active-popup button img {
@@ -138,20 +141,21 @@ footer {
   font-size: 1.5rem;
 }
 
-.active-popup ul {
+.info ul {
   list-style: none;
   display: flex;
   align-items: flex-start;
+  flex-wrap: wrap;
   gap: 1rem;
   width: 100%;
 }
 
-.active-popup ul li {
+.info ul li {
   background-color: #504e4e;
   padding: 0.4rem 1rem;
 }
 
-.active-popup ul li:hover {
+.info ul li:hover {
   background-color: #3b3838;
   cursor: pointer;
 }
@@ -161,36 +165,45 @@ footer {
 }
 
 .comment-section {
-  width: 60%;
+  margin-top: 1rem;
+  width: 80%;
+}
+
+.comment-section h2 {
+  text-align: center;
 }
 
 .comment-section * {
-  margin-top: 1rem;
-  display: block;
-  width: 85%;
+  /* width: 100%; */
 }
 
 .comment-section *::placeholder {
   font-family: monospace;
 }
 
-.comment-section input {
+.add-comment input,
+.add-comment textarea {
   padding: 0.3rem;
   color: #222121;
   height: 1.5rem;
 }
 
-.comment-section textarea {
-  padding: 0.3rem;
-  color: #222121;
+.add-comment {
+  margin: 1.5rem auto 0;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.add-comment textarea {
   height: 4rem;
 }
 
-.comment-section button {
+.add-comment button {
   border: none;
   background-color: #504e4e;
   padding: 0.5rem;
-  border-radius: 0.3rem;
 }
 
 .comment-section button:hover {
@@ -199,13 +212,33 @@ footer {
 }
 
 .comment-history {
+  margin: 1rem 0 1.5rem;
   display: flex;
   flex-direction: column;
+  gap: 0.8rem;
 }
 
 .single-comment {
   display: flex;
-  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #3b3838;
+  border-radius: 1rem;
+}
+
+.single-comment span:nth-of-type(1) {
+  color: #837e7e;
+  width: 100%;
+}
+
+.single-comment span:nth-of-type(2) {
+  font-size: 1.4rem;
+}
+
+.single-comment span:nth-of-type(3) {
+  font-style: italic;
 }
 
 #name-error,

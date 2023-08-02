@@ -1,7 +1,7 @@
 const renderComments = (commentData) => {
   const commentHistory = document.querySelector('.comment-history');
   commentHistory.innerHTML = "";
-  
+
   if (commentData) {
     commentData.forEach((elem) => {
       const singleComment = document.createElement('li');
@@ -11,7 +11,7 @@ const renderComments = (commentData) => {
   
       singleComment.classList.add('single-comment');
       date.textContent = elem.creation_date.replaceAll('-', '/');
-      name.textContent = elem.username;
+      name.textContent = elem.username + ':';
       message.textContent = elem.comment;
   
       singleComment.append(date, name, message);
