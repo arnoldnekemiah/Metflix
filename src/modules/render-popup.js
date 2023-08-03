@@ -1,5 +1,6 @@
 import close from '../assets/close.svg';
 import coming from '../assets/coming-soon.jpg';
+import commentSection from './comment-section.js';
 
 const renderPopup = (movieInfo) => {
   const movieCard = document.createElement('div');
@@ -49,6 +50,7 @@ const renderPopup = (movieInfo) => {
   infoDiv.innerHTML += movieInfo.show.summary;
 
   document.body.appendChild(movieCard);
+  commentSection(movieInfo.show.id);
 };
 
 export default renderPopup;
