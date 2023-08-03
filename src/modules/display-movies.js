@@ -1,5 +1,6 @@
 import coming from '../assets/coming-soon.jpg';
-import { addLike, getLikes } from './likes';
+import getliked from './get-liked.js';
+import { addLike, getLikes } from './likes.js';
 import renderPopup from './render-popup.js';
 
 // Function to display movies based on the selected genre
@@ -41,8 +42,12 @@ const displayMovies = (movieArray) => {
     movieCard.appendChild(movieImage);
     container.appendChild(movieCard);
 
-    buttonsDiv.appendChild(likeBtn);
     buttonsDiv.appendChild(commentBtn);
+    buttonsDiv.appendChild(likeBtn);
+
+    const likeCountSpan = document.createElement('span');
+    likeCountSpan.classList.add('like-count');
+
     movieCard.appendChild(buttonsDiv);
 
     likeBtn.addEventListener('click', async () => {
@@ -53,28 +58,23 @@ const displayMovies = (movieArray) => {
         const success = await addLike(item_id);
 
         if (success) {
-          // Handle successful like
-          console.log('Like created successfully');
           likeBtn.style.color = 'green'; // Update button color
-          // Optionally, you can also update the like count here if needed
+
+          // Fetch updated like count
+          const updatedLikes = await getLikes(getliked);
+          if (updatedLikes) {
+            likeCountSpan.textContent = `${updatedLikes.length} Likes`; // Update like count display
+          }
         } else {
-          // Handle unsuccessful like
-          console.log('Failed to create like');
-          likeBtn.style.color = 'black'; // Reset button color
+          likeBtn.style.color = 'grey';
         }
-        // Refresh the likes count if needed
-        getLikes(item_id)
-          .then((likes) => {
-            console.log('Likes:', likes);
-            // Perform additional actions with likes data
-          })
-          .catch((error) => {
-            console.error('Error fetching likes:', error);
-          });
+        getLikes(getliked);
+        // console log to be removed later.
+        console.log(getLikes(getliked));
       } catch (error) {
-        console.error('Error creating like:', error);
-        likeBtn.style.color = 'black'; // Reset button color
+        likeBtn.style.color = 'yellow';
       }
+      buttonsDiv.appendChild(likeCountSpan);
     });
 
     commentBtn.addEventListener('click', () => {
