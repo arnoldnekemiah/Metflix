@@ -1,6 +1,6 @@
 import coming from '../assets/coming-soon.jpg';
+import { addLike, getLikes } from './likes';
 import renderPopup from './render-popup.js';
-import createApp from './createapp.js';
 
 // Function to display movies based on the selected genre
 const displayMovies = (movieArray) => {
@@ -41,17 +41,41 @@ const displayMovies = (movieArray) => {
     movieCard.appendChild(movieImage);
     container.appendChild(movieCard);
 
-    createApp(likeBtn)
-      .then(() => {
-        // Rest of the code
-      })
-      .catch((error) => {
-        console.error('Error creating app:', error);
-      });
-
     buttonsDiv.appendChild(likeBtn);
     buttonsDiv.appendChild(commentBtn);
     movieCard.appendChild(buttonsDiv);
+
+    likeBtn.addEventListener('click', async () => {
+      likeBtn.style.color = 'red';
+      // eslint-disable-next-line camelcase
+      const item_id = movie.show.id;
+      try {
+        const success = await addLike(item_id);
+
+        if (success) {
+          // Handle successful like
+          console.log('Like created successfully');
+          likeBtn.style.color = 'green'; // Update button color
+          // Optionally, you can also update the like count here if needed
+        } else {
+          // Handle unsuccessful like
+          console.log('Failed to create like');
+          likeBtn.style.color = 'black'; // Reset button color
+        }
+        // Refresh the likes count if needed
+        getLikes(item_id)
+          .then((likes) => {
+            console.log('Likes:', likes);
+            // Perform additional actions with likes data
+          })
+          .catch((error) => {
+            console.error('Error fetching likes:', error);
+          });
+      } catch (error) {
+        console.error('Error creating like:', error);
+        likeBtn.style.color = 'black'; // Reset button color
+      }
+    });
 
     commentBtn.addEventListener('click', () => {
       // Handle comment button click
