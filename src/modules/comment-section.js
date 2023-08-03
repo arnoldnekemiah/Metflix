@@ -2,7 +2,6 @@ import getComments from './get-comments.js';
 import renderComments from './render-comments.js';
 import postComment from './post-comment.js';
 import showError from './show-error.js';
-import commentCounter from './comment-counter.js';
 
 const commentSection = async (id) => {
   const popup = document.querySelector('.active-popup');
@@ -24,7 +23,7 @@ const commentSection = async (id) => {
 
   nameError.id = 'name-error';
   commentError.id = 'comment-error';
-  commentTitle.textContent = 'Comments';
+  commentTitle.textContent = 'Comments (0)';
   userName.id = 'user-name';
   userName.type = 'text';
   userName.placeholder = 'Your name';
@@ -65,9 +64,6 @@ const commentSection = async (id) => {
   popup.appendChild(commentSection);
 
   renderComments(commentData);
-
-  const commentCount = commentCounter();
-  commentTitle.textContent += ` (${commentCount})`;
 };
 
 export default commentSection;
