@@ -33,10 +33,12 @@ const displayMovies = (movieArray) => {
     }
 
     commentBtn.textContent = 'Comments';
+    commentBtn.classList.add('comment-button');
     likeBtn.classList.add('fa', 'fa-heart');
 
     movieCard.classList.add('card');
     buttonsDiv.classList.add('comment');
+    movieImage.classList.add('movieImage');
 
     movieCard.appendChild(movieTitle);
     movieCard.appendChild(movieImage);
@@ -52,10 +54,9 @@ const displayMovies = (movieArray) => {
 
     likeBtn.addEventListener('click', async () => {
       likeBtn.style.color = 'red';
-      // eslint-disable-next-line camelcase
-      const item_id = movie.show.id;
+      const itemid = movie.show.id;
       try {
-        const success = await addLike(item_id);
+        const success = await addLike(itemid);
 
         if (success) {
           likeBtn.style.color = 'green'; // Update button color
@@ -69,8 +70,6 @@ const displayMovies = (movieArray) => {
           likeBtn.style.color = 'grey';
         }
         getLikes(getliked);
-        // console log to be removed later.
-        console.log(getLikes(getliked));
       } catch (error) {
         likeBtn.style.color = 'yellow';
       }
