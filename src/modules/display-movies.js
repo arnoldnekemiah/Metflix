@@ -1,9 +1,12 @@
 import coming from '../assets/coming-soon.jpg';
 import renderPopup from './render-popup.js';
+import createApp from './createapp.js';
+
 // Function to display movies based on the selected genre
 const displayMovies = (movieArray) => {
   const container = document.querySelector('main');
   container.innerHTML = ''; // Clear the current movies displayed on the page
+
   if (!movieArray || movieArray.length === 0) {
     // Handle the case when genreData is not available or empty
     const noMoviesMessage = document.createElement('p');
@@ -21,6 +24,7 @@ const displayMovies = (movieArray) => {
     const likeBtn = document.createElement('i');
 
     movieTitle.textContent = movie.show.name;
+
     if (movie.show.image) {
       movieImage.src = movie.show.image.medium;
     } else {
@@ -37,12 +41,20 @@ const displayMovies = (movieArray) => {
     movieCard.appendChild(movieImage);
     container.appendChild(movieCard);
 
+    createApp(likeBtn)
+      .then(() => {
+        // Rest of the code
+      })
+      .catch((error) => {
+        console.error('Error creating app:', error);
+      });
+
     buttonsDiv.appendChild(likeBtn);
     buttonsDiv.appendChild(commentBtn);
     movieCard.appendChild(buttonsDiv);
 
     commentBtn.addEventListener('click', () => {
-      // hideContent();
+      // Handle comment button click
       const pageContent = document.querySelectorAll('header, main, footer');
       pageContent.forEach((element) => element.classList.add('hidden'));
       document.body.classList.add('black');
