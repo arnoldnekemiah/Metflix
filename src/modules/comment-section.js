@@ -1,3 +1,5 @@
+import getComments from './get-comments.js';
+import renderComments from './render-comments.js';
 import postComment from './post-comment.js';
 import showError from './show-error.js';
 
@@ -13,6 +15,7 @@ const commentSection = async (id) => {
   const userComment = document.createElement('textarea');
   const commentError = document.createElement('span');
   const commentBtn = document.createElement('button');
+  const commentData = await getComments(id);
 
   commentSection.classList.add('comment-section');
   addComment.classList.add('add-comment');
@@ -40,6 +43,9 @@ const commentSection = async (id) => {
     } else if (name && message !== '') {
       await postComment(id, name, message);
 
+      const commentData = await getComments(id);
+      renderComments(commentData);
+
       document.getElementById('user-name').value = '';
       document.getElementById('user-message').value = '';
     }
@@ -56,6 +62,8 @@ const commentSection = async (id) => {
   addComment.append(userName, nameError, userComment, commentError, commentBtn);
   commentSection.append(commentTitle, commentHistory, addComment);
   popup.appendChild(commentSection);
+
+  renderComments(commentData);
 };
 
 export default commentSection;
