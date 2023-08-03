@@ -23,7 +23,7 @@ const commentSection = async (id) => {
 
   nameError.id = 'name-error';
   commentError.id = 'comment-error';
-  commentTitle.textContent = 'Comments';
+  commentTitle.textContent = 'Comments (0)';
   userName.id = 'user-name';
   userName.type = 'text';
   userName.placeholder = 'Your name';
