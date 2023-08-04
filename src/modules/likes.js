@@ -11,6 +11,7 @@ const updateLikeCount = (likeCount, showId) => {
 
 function handleLikeButtonClick(likeBtn, likeCount) {
   const showId = likeBtn.getAttribute('data-show-id');
+  updateLikeCount(likeCount, showId);
   likeBtn.addEventListener('click', async () => {
     await postLike(showId);
     // Pass the likeCount element as an argument

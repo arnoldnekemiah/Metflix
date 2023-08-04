@@ -13,8 +13,7 @@ const displayMovies = async (movieArray) => {
     return;
   }
 
-  // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < movieArray.length; i++) {
+  for (let i = 0; i < movieArray.length; i += 1) {
     const movie = movieArray[i];
     const likeBtnId = `likeBtn_${movie.show.id}`;
 
