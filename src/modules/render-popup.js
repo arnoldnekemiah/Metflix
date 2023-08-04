@@ -21,7 +21,7 @@ const renderPopup = (movieInfo) => {
   title.textContent = movieInfo.show.name;
   lang.textContent = movieInfo.show.language;
   premiere.textContent = movieInfo.show.premiered;
-  score.textContent = movieInfo.score.toFixed(2);
+  score.textContent = `Score: ${(movieInfo.score * 10).toFixed(2)}`;
   score.classList.add('score');
 
   for (let i = 0; i < movieInfo.show.genres.length; i += 1) {
@@ -40,9 +40,8 @@ const renderPopup = (movieInfo) => {
   closeBtn.addEventListener('click', () => {
     movieCard.remove();
     // showContent();
-    const pageContent = document.querySelectorAll('header, main, footer');
-    pageContent.forEach((element) => element.classList.remove('hidden'));
-    document.body.classList.remove('black');
+    const pageContent = document.querySelector('main');
+    pageContent.classList.remove('blur');
   });
 
   infoDiv.append(title, score, genres, lang, premiere);

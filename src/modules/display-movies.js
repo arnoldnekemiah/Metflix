@@ -60,9 +60,8 @@ const displayMovies = async (movieArray) => {
     handleLikeButtonClick(likeBtn, likeCountSpan, i);
 
     commentBtn.addEventListener('click', () => {
-      const pageContent = document.querySelectorAll('header, main, footer');
-      pageContent.forEach((element) => element.classList.add('hidden'));
-      document.body.classList.add('black');
+      const pageContent = document.querySelector('main');
+      pageContent.classList.add('blur');
       renderPopup(movie);
     });
   }
