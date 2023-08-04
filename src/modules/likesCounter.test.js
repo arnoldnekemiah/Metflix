@@ -1,8 +1,8 @@
-// Create a manual mock for the api.js module
 // Import the function to be tested
 import { getLikes } from './api.js';
 import getLikesCount from './likesCounter.js';
 
+// Create a manual mock for the api.js module
 jest.mock('./api.js', () => ({
   getLikes: jest.fn(),
 }));
