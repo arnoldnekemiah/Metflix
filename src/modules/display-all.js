@@ -16,6 +16,12 @@ const displayAll = async () => {
     if (x > y) { return 1; }
     return 0;
   });
+  // Calculate the total movie count
+  const totalMovieCount = movieArray.length;
+
+  // Display the total movie count next to the "All Shows" label
+  const allNavLink = document.getElementById('all');
+  allNavLink.innerHTML = `All Shows (${totalMovieCount})`;
   // display them
   displayMovies(movieArray);
 };
