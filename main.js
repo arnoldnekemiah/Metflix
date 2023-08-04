@@ -253,9 +253,8 @@ const displayMovies = async movieArray => {
     likeBtn.setAttribute('data-show-id', movie.show.id);
     (0,_likes_js__WEBPACK_IMPORTED_MODULE_2__["default"])(likeBtn, likeCountSpan, i);
     commentBtn.addEventListener('click', () => {
-      const pageContent = document.querySelectorAll('header, main, footer');
-      pageContent.forEach(element => element.classList.add('hidden'));
-      document.body.classList.add('black');
+      const pageContent = document.querySelector('main');
+      pageContent.classList.add('blur');
       (0,_render_popup_js__WEBPACK_IMPORTED_MODULE_1__["default"])(movie);
     });
   }
@@ -440,7 +439,7 @@ const renderPopup = movieInfo => {
   title.textContent = movieInfo.show.name;
   lang.textContent = movieInfo.show.language;
   premiere.textContent = movieInfo.show.premiered;
-  score.textContent = movieInfo.score.toFixed(2);
+  score.textContent = `Score: ${(movieInfo.score * 10).toFixed(2)}`;
   score.classList.add('score');
   for (let i = 0; i < movieInfo.show.genres.length; i += 1) {
     const genre = document.createElement('li');
@@ -456,9 +455,8 @@ const renderPopup = movieInfo => {
   closeBtn.addEventListener('click', () => {
     movieCard.remove();
     // showContent();
-    const pageContent = document.querySelectorAll('header, main, footer');
-    pageContent.forEach(element => element.classList.remove('hidden'));
-    document.body.classList.remove('black');
+    const pageContent = document.querySelector('main');
+    pageContent.classList.remove('blur');
   });
   infoDiv.append(title, score, genres, lang, premiere);
   movieCard.append(closeBtn, image, infoDiv);
@@ -522,30 +520,59 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-}
-
-body.black {
-  background-color: #222121;
+  position: relative;
 }
 
 main {
   display: grid;
+  padding: 5rem;
   grid-template-columns: repeat(auto-fill, 300px);
   gap: 30px;
   flex: 2;
   justify-content: center;
-  margin-top: 5rem;
 }
 
 header {
   background: #fff;
   display: flex;
   justify-content: space-between;
-  padding: 1rem 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 2rem;
   box-shadow: 0 0 10px #0000001a;
   position: sticky;
   top: 0;
-  z-index: 999;
+  z-index: 3;
+  font-family: 'Public Sans', sans-serif;
+}
+
+#search-bar {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  gap: 2px;
+}
+
+#search-bar p {
+  text-align: center;
+  display: block;
+  height: 1rem;
+  font-size: 0.8rem;
+}
+
+#search-input {
+  border: 1px black solid;
+  padding: 0.3rem;
+}
+
+#search-btn {
+  border: none;
+  background-color: transparent;
+  display: block;
+  background-color: #d6d6d6;
+  padding: 0.3rem;
+  cursor: pointer;
 }
 
 .desktop-menu {
@@ -562,12 +589,14 @@ header {
 
 .categories {
   display: flex;
-  margin-top: 0.8rem;
   gap: 3rem;
 }
 
 .categories .navlink {
   list-style: none;
+  border-bottom: #FFF solid 1px;
+  cursor: pointer;
+  text-align: center;
 }
 
 .categories .navlink a {
@@ -575,18 +604,9 @@ header {
   text-decoration: none;
 }
 
-.navlink :hover {
-  background-color: aqua;
+.navlink:hover {
+  border-bottom: #222121 solid 1px;
 }
-
-h1 {
-  background-color: burlywood;
-}
-
-/*
-img {
-  height: 400px;
-} */
 
 .movieImage {
   transition: all 0.3s ease-in-out;
@@ -599,11 +619,18 @@ img {
 
 .card {
   display: grid;
+  padding: 2rem;
+  gap: 1rem;
   place-items: center;
   border-radius: 8px;
-  padding: 1rem 0;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
 }
 
 .comment-button {
@@ -622,35 +649,43 @@ img {
 
 .fa-heart {
   margin-top: 5px;
+  cursor: pointer;
 }
 
 .commentLike-div {
   display: flex;
-  width: fit-content;
-  gap: 20px;
+  justify-content: space-between;
+  width: 100%;
   margin-top: 5px;
+}
+
+.like-count {
+  font-family: 'Public Sans', sans-serif;
 }
 
 footer {
   padding: 2rem;
-  background-color: turquoise;
+  background-color: #a0a0a0;
+  font-family: 'Public Sans', sans-serif;
+  text-align: center;
 }
 
 .active-popup {
-  background-color: #222121;
-  margin: 5% 15%;
-  padding: 4rem 5% 4%;
-  max-width: 700px;
+  margin: 6% 20%;
+  padding: 4rem 5% 4rem;
+  background-color: #FFF;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2rem;
-  position: relative;
-  border: 2px solid rgb(163, 12, 12);
+  position: absolute;
+  align-self: center;
+  border: 2px solid rgb(54, 54, 54);
+  z-index: 2;
 }
 
 .active-popup * {
-  color: white;
+  font-family: 'Public Sans', sans-serif;
 }
 
 .active-popup #close-btn {
@@ -665,8 +700,7 @@ footer {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 1rem;
-  width: 100%;
-  max-width: 300px;
+  width: 70%;
 }
 
 .active-popup .info p:nth-child(4) {
@@ -699,7 +733,8 @@ footer {
 }
 
 .info ul li {
-  background-color: #504e4e;
+  border: black 1px solid;
+  background-color: #a0a0a0;
   padding: 0.4rem 1rem;
 }
 
@@ -709,12 +744,16 @@ footer {
 }
 
 .hidden {
-  display: none;
+  opacity: 0;
+}
+
+.blur {
+  filter: blur(0.5rem);
 }
 
 .comment-section {
   margin-top: 1rem;
-  width: 80%;
+  width: 100%;
 }
 
 .comment-section h2 {
@@ -722,31 +761,33 @@ footer {
 }
 
 .comment-section *::placeholder {
-  font-family: monospace;
+  font-family: 'Public Sans', sans-serif;
+  font-style: italic;
 }
 
 .add-comment input,
 .add-comment textarea {
   padding: 0.3rem;
-  color: #222121;
   height: 1.5rem;
 }
 
 .add-comment {
   margin: 1.5rem auto 0;
-  width: 60%;
+  width: 70%;
+  min-width: 400px;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
 .add-comment textarea {
-  height: 4rem;
+  height: 5rem;
 }
 
 .add-comment button {
   border: none;
-  background-color: #504e4e;
+  border: black 1px solid;
+  background-color: #a0a0a0;
   padding: 0.5rem;
 }
 
@@ -768,17 +809,17 @@ footer {
   align-items: baseline;
   gap: 0.5rem;
   padding: 1rem;
-  border: 1px solid #3b3838;
-  border-radius: 1rem;
+  border: 1px solid black;
+  border-radius: 0.3rem;
 }
 
 .single-comment span:nth-of-type(1) {
-  color: #837e7e;
+  color: #6b6b6b;
   width: 100%;
 }
 
 .single-comment span:nth-of-type(2) {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
 }
 
 .single-comment span:nth-of-type(3) {
@@ -801,7 +842,7 @@ footer {
   font-size: 12px;
   color: rgb(27, 72, 207);
 }
-`, "",{"version":3,"sources":["webpack://./src/style.css"],"names":[],"mappings":"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","sourcesContent":["* {\r\n  margin: 0;\r\n  padding: 0;\r\n  box-sizing: border-box;\r\n}\r\n\r\nbody {\r\n  display: flex;\r\n  flex-direction: column;\r\n  min-height: 100vh;\r\n}\r\n\r\nbody.black {\r\n  background-color: #222121;\r\n}\r\n\r\nmain {\r\n  display: grid;\r\n  grid-template-columns: repeat(auto-fill, 300px);\r\n  gap: 30px;\r\n  flex: 2;\r\n  justify-content: center;\r\n  margin-top: 5rem;\r\n}\r\n\r\nheader {\r\n  background: #fff;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  padding: 1rem 1rem;\r\n  box-shadow: 0 0 10px #0000001a;\r\n  position: sticky;\r\n  top: 0;\r\n  z-index: 999;\r\n}\r\n\r\n.desktop-menu {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n}\r\n\r\n.logo {\r\n  display: flex;\r\n  width: auto;\r\n  height: 50px;\r\n}\r\n\r\n.categories {\r\n  display: flex;\r\n  margin-top: 0.8rem;\r\n  gap: 3rem;\r\n}\r\n\r\n.categories .navlink {\r\n  list-style: none;\r\n}\r\n\r\n.categories .navlink a {\r\n  color: black;\r\n  text-decoration: none;\r\n}\r\n\r\n.navlink :hover {\r\n  background-color: aqua;\r\n}\r\n\r\nh1 {\r\n  background-color: burlywood;\r\n}\r\n\r\n/*\r\nimg {\r\n  height: 400px;\r\n} */\r\n\r\n.movieImage {\r\n  transition: all 0.3s ease-in-out;\r\n  cursor: pointer;\r\n}\r\n\r\n.movieImage:hover {\r\n  transform: scale(1.05);\r\n}\r\n\r\n.card {\r\n  display: grid;\r\n  place-items: center;\r\n  border-radius: 8px;\r\n  padding: 1rem 0;\r\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\r\n  transition: all 0.3s ease-in-out;\r\n}\r\n\r\n.comment-button {\r\n  padding: 0.5rem 1rem;\r\n  border-radius: 8px;\r\n  border: none;\r\n  cursor: pointer;\r\n  font-size: 1rem;\r\n  font-weight: 500;\r\n  transition: all 0.3s ease-in-out;\r\n}\r\n\r\n.comment-button:hover {\r\n  transform: scale(1.05);\r\n}\r\n\r\n.fa-heart {\r\n  margin-top: 5px;\r\n}\r\n\r\n.commentLike-div {\r\n  display: flex;\r\n  width: fit-content;\r\n  gap: 20px;\r\n  margin-top: 5px;\r\n}\r\n\r\nfooter {\r\n  padding: 2rem;\r\n  background-color: turquoise;\r\n}\r\n\r\n.active-popup {\r\n  background-color: #222121;\r\n  margin: 5% 15%;\r\n  padding: 4rem 5% 4%;\r\n  max-width: 700px;\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  gap: 2rem;\r\n  position: relative;\r\n  border: 2px solid rgb(163, 12, 12);\r\n}\r\n\r\n.active-popup * {\r\n  color: white;\r\n}\r\n\r\n.active-popup #close-btn {\r\n  all: unset;\r\n  position: absolute;\r\n  right: 1rem;\r\n  top: 1rem;\r\n}\r\n\r\n.active-popup .info {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  justify-content: space-between;\r\n  gap: 1rem;\r\n  width: 100%;\r\n  max-width: 300px;\r\n}\r\n\r\n.active-popup .info p:nth-child(4) {\r\n  width: 100%;\r\n}\r\n\r\n.active-popup > img {\r\n  height: auto;\r\n  width: 100%;\r\n  max-width: 300px;\r\n}\r\n\r\n.active-popup button img {\r\n  height: 2rem;\r\n  width: 2rem;\r\n}\r\n\r\n.active-popup h2,\r\n.active-popup .score {\r\n  font-size: 1.5rem;\r\n}\r\n\r\n.info ul {\r\n  list-style: none;\r\n  display: flex;\r\n  align-items: flex-start;\r\n  flex-wrap: wrap;\r\n  gap: 1rem;\r\n  width: 100%;\r\n}\r\n\r\n.info ul li {\r\n  background-color: #504e4e;\r\n  padding: 0.4rem 1rem;\r\n}\r\n\r\n.info ul li:hover {\r\n  background-color: #3b3838;\r\n  cursor: pointer;\r\n}\r\n\r\n.hidden {\r\n  display: none;\r\n}\r\n\r\n.comment-section {\r\n  margin-top: 1rem;\r\n  width: 80%;\r\n}\r\n\r\n.comment-section h2 {\r\n  text-align: center;\r\n}\r\n\r\n.comment-section *::placeholder {\r\n  font-family: monospace;\r\n}\r\n\r\n.add-comment input,\r\n.add-comment textarea {\r\n  padding: 0.3rem;\r\n  color: #222121;\r\n  height: 1.5rem;\r\n}\r\n\r\n.add-comment {\r\n  margin: 1.5rem auto 0;\r\n  width: 60%;\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 0.5rem;\r\n}\r\n\r\n.add-comment textarea {\r\n  height: 4rem;\r\n}\r\n\r\n.add-comment button {\r\n  border: none;\r\n  background-color: #504e4e;\r\n  padding: 0.5rem;\r\n}\r\n\r\n.comment-section button:hover {\r\n  background-color: #3b3838;\r\n  cursor: pointer;\r\n}\r\n\r\n.comment-history {\r\n  margin: 1rem 0 1.5rem;\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 0.8rem;\r\n}\r\n\r\n.single-comment {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  align-items: baseline;\r\n  gap: 0.5rem;\r\n  padding: 1rem;\r\n  border: 1px solid #3b3838;\r\n  border-radius: 1rem;\r\n}\r\n\r\n.single-comment span:nth-of-type(1) {\r\n  color: #837e7e;\r\n  width: 100%;\r\n}\r\n\r\n.single-comment span:nth-of-type(2) {\r\n  font-size: 1.4rem;\r\n}\r\n\r\n.single-comment span:nth-of-type(3) {\r\n  font-style: italic;\r\n}\r\n\r\n#name-error,\r\n#comment-error {\r\n  opacity: 0;\r\n}\r\n\r\n#name-error.show,\r\n#comment-error.show {\r\n  opacity: 1;\r\n}\r\n\r\n.like-count {\r\n  display: block;\r\n  margin-top: 5px;\r\n  font-size: 12px;\r\n  color: rgb(27, 72, 207);\r\n}\r\n"],"sourceRoot":""}]);
+`, "",{"version":3,"sources":["webpack://./src/style.css"],"names":[],"mappings":"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","sourcesContent":["* {\r\n  margin: 0;\r\n  padding: 0;\r\n  box-sizing: border-box;\r\n}\r\n\r\nbody {\r\n  display: flex;\r\n  flex-direction: column;\r\n  min-height: 100vh;\r\n  position: relative;\r\n}\r\n\r\nmain {\r\n  display: grid;\r\n  padding: 5rem;\r\n  grid-template-columns: repeat(auto-fill, 300px);\r\n  gap: 30px;\r\n  flex: 2;\r\n  justify-content: center;\r\n}\r\n\r\nheader {\r\n  background: #fff;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  flex-wrap: wrap;\r\n  align-items: center;\r\n  gap: 1rem;\r\n  padding: 1rem 2rem;\r\n  box-shadow: 0 0 10px #0000001a;\r\n  position: sticky;\r\n  top: 0;\r\n  z-index: 3;\r\n  font-family: 'Public Sans', sans-serif;\r\n}\r\n\r\n#search-bar {\r\n  display: flex;\r\n  flex-direction: column;\r\n  width: 250px;\r\n  gap: 2px;\r\n}\r\n\r\n#search-bar p {\r\n  text-align: center;\r\n  display: block;\r\n  height: 1rem;\r\n  font-size: 0.8rem;\r\n}\r\n\r\n#search-input {\r\n  border: 1px black solid;\r\n  padding: 0.3rem;\r\n}\r\n\r\n#search-btn {\r\n  border: none;\r\n  background-color: transparent;\r\n  display: block;\r\n  background-color: #d6d6d6;\r\n  padding: 0.3rem;\r\n  cursor: pointer;\r\n}\r\n\r\n.desktop-menu {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n}\r\n\r\n.logo {\r\n  display: flex;\r\n  width: auto;\r\n  height: 50px;\r\n}\r\n\r\n.categories {\r\n  display: flex;\r\n  gap: 3rem;\r\n}\r\n\r\n.categories .navlink {\r\n  list-style: none;\r\n  border-bottom: #FFF solid 1px;\r\n  cursor: pointer;\r\n  text-align: center;\r\n}\r\n\r\n.categories .navlink a {\r\n  color: black;\r\n  text-decoration: none;\r\n}\r\n\r\n.navlink:hover {\r\n  border-bottom: #222121 solid 1px;\r\n}\r\n\r\n.movieImage {\r\n  transition: all 0.3s ease-in-out;\r\n  cursor: pointer;\r\n}\r\n\r\n.movieImage:hover {\r\n  transform: scale(1.05);\r\n}\r\n\r\n.card {\r\n  display: grid;\r\n  padding: 2rem;\r\n  gap: 1rem;\r\n  place-items: center;\r\n  border-radius: 8px;\r\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\r\n  transition: all 0.3s ease-in-out;\r\n}\r\n\r\n.card img {\r\n  width: 100%;\r\n  height: auto;\r\n  border-radius: 0.5rem;\r\n}\r\n\r\n.comment-button {\r\n  padding: 0.5rem 1rem;\r\n  border-radius: 8px;\r\n  border: none;\r\n  cursor: pointer;\r\n  font-size: 1rem;\r\n  font-weight: 500;\r\n  transition: all 0.3s ease-in-out;\r\n}\r\n\r\n.comment-button:hover {\r\n  transform: scale(1.05);\r\n}\r\n\r\n.fa-heart {\r\n  margin-top: 5px;\r\n  cursor: pointer;\r\n}\r\n\r\n.commentLike-div {\r\n  display: flex;\r\n  justify-content: space-between;\r\n  width: 100%;\r\n  margin-top: 5px;\r\n}\r\n\r\n.like-count {\r\n  font-family: 'Public Sans', sans-serif;\r\n}\r\n\r\nfooter {\r\n  padding: 2rem;\r\n  background-color: #a0a0a0;\r\n  font-family: 'Public Sans', sans-serif;\r\n  text-align: center;\r\n}\r\n\r\n.active-popup {\r\n  margin: 6% 20%;\r\n  padding: 4rem 5% 4rem;\r\n  background-color: #FFF;\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  gap: 2rem;\r\n  position: absolute;\r\n  align-self: center;\r\n  border: 2px solid rgb(54, 54, 54);\r\n  z-index: 2;\r\n}\r\n\r\n.active-popup * {\r\n  font-family: 'Public Sans', sans-serif;\r\n}\r\n\r\n.active-popup #close-btn {\r\n  all: unset;\r\n  position: absolute;\r\n  right: 1rem;\r\n  top: 1rem;\r\n}\r\n\r\n.active-popup .info {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  justify-content: space-between;\r\n  gap: 1rem;\r\n  width: 70%;\r\n}\r\n\r\n.active-popup .info p:nth-child(4) {\r\n  width: 100%;\r\n}\r\n\r\n.active-popup > img {\r\n  height: auto;\r\n  width: 100%;\r\n  max-width: 300px;\r\n}\r\n\r\n.active-popup button img {\r\n  height: 2rem;\r\n  width: 2rem;\r\n}\r\n\r\n.active-popup h2,\r\n.active-popup .score {\r\n  font-size: 1.5rem;\r\n}\r\n\r\n.info ul {\r\n  list-style: none;\r\n  display: flex;\r\n  align-items: flex-start;\r\n  flex-wrap: wrap;\r\n  gap: 1rem;\r\n  width: 100%;\r\n}\r\n\r\n.info ul li {\r\n  border: black 1px solid;\r\n  background-color: #a0a0a0;\r\n  padding: 0.4rem 1rem;\r\n}\r\n\r\n.info ul li:hover {\r\n  background-color: #3b3838;\r\n  cursor: pointer;\r\n}\r\n\r\n.hidden {\r\n  opacity: 0;\r\n}\r\n\r\n.blur {\r\n  filter: blur(0.5rem);\r\n}\r\n\r\n.comment-section {\r\n  margin-top: 1rem;\r\n  width: 100%;\r\n}\r\n\r\n.comment-section h2 {\r\n  text-align: center;\r\n}\r\n\r\n.comment-section *::placeholder {\r\n  font-family: 'Public Sans', sans-serif;\r\n  font-style: italic;\r\n}\r\n\r\n.add-comment input,\r\n.add-comment textarea {\r\n  padding: 0.3rem;\r\n  height: 1.5rem;\r\n}\r\n\r\n.add-comment {\r\n  margin: 1.5rem auto 0;\r\n  width: 70%;\r\n  min-width: 400px;\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 0.5rem;\r\n}\r\n\r\n.add-comment textarea {\r\n  height: 5rem;\r\n}\r\n\r\n.add-comment button {\r\n  border: none;\r\n  border: black 1px solid;\r\n  background-color: #a0a0a0;\r\n  padding: 0.5rem;\r\n}\r\n\r\n.comment-section button:hover {\r\n  background-color: #3b3838;\r\n  cursor: pointer;\r\n}\r\n\r\n.comment-history {\r\n  margin: 1rem 0 1.5rem;\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 0.8rem;\r\n}\r\n\r\n.single-comment {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  align-items: baseline;\r\n  gap: 0.5rem;\r\n  padding: 1rem;\r\n  border: 1px solid black;\r\n  border-radius: 0.3rem;\r\n}\r\n\r\n.single-comment span:nth-of-type(1) {\r\n  color: #6b6b6b;\r\n  width: 100%;\r\n}\r\n\r\n.single-comment span:nth-of-type(2) {\r\n  font-size: 1.2rem;\r\n}\r\n\r\n.single-comment span:nth-of-type(3) {\r\n  font-style: italic;\r\n}\r\n\r\n#name-error,\r\n#comment-error {\r\n  opacity: 0;\r\n}\r\n\r\n#name-error.show,\r\n#comment-error.show {\r\n  opacity: 1;\r\n}\r\n\r\n.like-count {\r\n  display: block;\r\n  margin-top: 5px;\r\n  font-size: 12px;\r\n  color: rgb(27, 72, 207);\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -1394,7 +1435,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const navLinks = document.querySelectorAll('.navlink');
-const input = document.getElementById('input');
+const input = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
 document.addEventListener('DOMContentLoaded', async () => {
   (0,_modules_display_all_js__WEBPACK_IMPORTED_MODULE_3__["default"])();
