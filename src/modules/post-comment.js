@@ -1,5 +1,8 @@
+const involvementAPI = 'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/';
+const apiId = 'IXNHPoRODtuVf9PEinhq';
+
 const postComment = async (id, name, message) => {
-  await fetch('https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/gVm054blBRYdlwCGxPpc/comments', {
+  await fetch(`${involvementAPI}${apiId}/comments`, {
     method: 'POST',
     body: JSON.stringify({
       item_id: id,
