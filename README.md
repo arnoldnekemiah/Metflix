@@ -1,4 +1,6 @@
 <h3 align="center"><b>Metflix</b></h3>
+![image](https://github.com/arnoldnekemiah/Metflix/assets/42886828/44697313-8fd3-4337-8408-a3bcc845a3d3)
+
 
 <p align="center">This is a single-page app where users can search a movie, like and open details about each movie and leave comments. Built with JavaScript.</p>
 
