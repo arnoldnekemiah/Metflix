@@ -14,15 +14,12 @@ const addLike = async (item_id) => {
       },
     });
     if (response.ok) {
-      console.log('Like created successfully');
       return true; // Indicate success
     }
     const responseText = await response.text();
-    console.error('Error creating like:', responseText);
-    return false; // Indicate failure
+    return response('Successfully created, like:', responseText);
   } catch (error) {
-    console.error('Error creating like:', error);
-    return false; // Indicate failure
+    return error('Error creating like:', error);
   }
 };
 
