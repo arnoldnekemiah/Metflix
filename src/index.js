@@ -6,7 +6,7 @@ import displayAll from './modules/display-all.js';
 import itemCounter from './item-counter.js';
 
 const navLinks = document.querySelectorAll('.navlink');
-const input = document.getElementById('input');
+const input = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
 
 document.addEventListener('DOMContentLoaded', async () => {
