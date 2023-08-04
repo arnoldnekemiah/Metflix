@@ -1,28 +1,31 @@
 import coming from '../assets/coming-soon.jpg';
-import getliked from './get-liked.js';
-import { addLike, getLikes } from './likes.js';
 import renderPopup from './render-popup.js';
+import handleLikeButtonClick from './likes.js';
 
-// Function to display movies based on the selected genre
-const displayMovies = (movieArray) => {
+const displayMovies = async (movieArray) => {
   const container = document.querySelector('main');
-  container.innerHTML = ''; // Clear the current movies displayed on the page
+  container.innerHTML = '';
 
   if (!movieArray || movieArray.length === 0) {
-    // Handle the case when genreData is not available or empty
     const noMoviesMessage = document.createElement('p');
     noMoviesMessage.textContent = 'No movies found for this category.';
     container.appendChild(noMoviesMessage);
     return;
   }
 
-  movieArray.forEach((movie) => {
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < movieArray.length; i++) {
+    const movie = movieArray[i];
+    const likeBtnId = `likeBtn_${movie.show.id}`;
+
     const movieCard = document.createElement('div');
     const movieTitle = document.createElement('h2');
     const movieImage = document.createElement('img');
     const buttonsDiv = document.createElement('div');
     const commentBtn = document.createElement('button');
     const likeBtn = document.createElement('i');
+    likeBtn.classList.add('fa', 'fa-heart');
+    likeBtn.id = likeBtnId;
 
     movieTitle.textContent = movie.show.name;
 
@@ -34,10 +37,9 @@ const displayMovies = (movieArray) => {
 
     commentBtn.textContent = 'Comments';
     commentBtn.classList.add('comment-button');
-    likeBtn.classList.add('fa', 'fa-heart');
 
     movieCard.classList.add('card');
-    buttonsDiv.classList.add('comment');
+    buttonsDiv.classList.add('commentLike-div');
     movieImage.classList.add('movieImage');
 
     movieCard.appendChild(movieTitle);
@@ -49,41 +51,22 @@ const displayMovies = (movieArray) => {
 
     const likeCountSpan = document.createElement('span');
     likeCountSpan.classList.add('like-count');
+    likeCountSpan.textContent = '';
+    buttonsDiv.appendChild(likeCountSpan);
 
     movieCard.appendChild(buttonsDiv);
+    movieCard.appendChild(likeCountSpan);
 
-    likeBtn.addEventListener('click', async () => {
-      likeBtn.style.color = 'red';
-      const itemid = movie.show.id;
-      try {
-        const success = await addLike(itemid);
-
-        if (success) {
-          likeBtn.style.color = 'green'; // Update button color
-
-          // Fetch updated like count
-          const updatedLikes = await getLikes(getliked);
-          if (updatedLikes) {
-            likeCountSpan.textContent = `${updatedLikes.length} Likes`; // Update like count display
-          }
-        } else {
-          likeBtn.style.color = 'grey';
-        }
-        getLikes(getliked);
-      } catch (error) {
-        likeBtn.style.color = 'yellow';
-      }
-      buttonsDiv.appendChild(likeCountSpan);
-    });
+    likeBtn.setAttribute('data-show-id', movie.show.id);
+    handleLikeButtonClick(likeBtn, likeCountSpan, i);
 
     commentBtn.addEventListener('click', () => {
-      // Handle comment button click
       const pageContent = document.querySelectorAll('header, main, footer');
       pageContent.forEach((element) => element.classList.add('hidden'));
       document.body.classList.add('black');
       renderPopup(movie);
     });
-  });
+  }
 };
 
 export default displayMovies;

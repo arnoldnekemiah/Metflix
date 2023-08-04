@@ -110,8 +110,9 @@ img {
   margin-top: 5px;
 }
 
-.comment {
+.commentLike-div {
   display: flex;
+  width: fit-content;
   gap: 20px;
   margin-top: 5px;
 }
