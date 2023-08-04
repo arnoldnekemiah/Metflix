@@ -237,7 +237,7 @@ footer {
 
 .comment-section {
   margin-top: 1rem;
-  width: 100%;
+  width: 70%;
 }
 
 .comment-section h2 {
@@ -257,7 +257,6 @@ footer {
 
 .add-comment {
   margin: 1.5rem auto 0;
-  width: 70%;
   min-width: 400px;
   display: flex;
   flex-direction: column;
