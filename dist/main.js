@@ -2,73 +2,494 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/index.js":
-/*!**********************!*\
-  !*** ./src/index.js ***!
-  \**********************/
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
+/***/ "./src/item-counter.js":
+/*!*****************************!*\
+  !*** ./src/item-counter.js ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-__webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ "./src/style.css");
-/* harmony import */ var _assets_bin_svgrepo_com_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./assets/bin-svgrepo-com.svg */ "./src/assets/bin-svgrepo-com.svg");
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const itemCounter = () => {
+  const numberItmes = document.getElementById('item-counter');
+  const totalItems = document.querySelectorAll('.card');
+  numberItmes.parentElement.classList.remove('hidden');
+  numberItmes.textContent = totalItems.length;
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (itemCounter);
 
+/***/ }),
 
+/***/ "./src/modules/api.js":
+/*!****************************!*\
+  !*** ./src/modules/api.js ***!
+  \****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-// THESE LINES WILL BE DELETED IN FUTURE, IT'S JUST A TEST OF API
-// SOME OF THE CODE MIGHT BE MODIFIED, REFACTORED AND REUSED IN MODULE FILES
-
-// a function that gives the array of movies (with properties like 'name', 'genre', 'image')
-const getData = async genreURL => {
-  const response = await fetch(genreURL, {
-    method: 'GET'
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getLikes: () => (/* binding */ getLikes),
+/* harmony export */   postLike: () => (/* binding */ postLike)
+/* harmony export */ });
+const involvementAPI = 'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/';
+const apiId = 'IXNHPoRODtuVf9PEinhq';
+const postLike = async id => {
+  const response = await fetch(`${involvementAPI}${apiId}/likes/`, {
+    method: 'POST',
+    body: JSON.stringify({
+      item_id: id
+    }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    }
   });
+  return response;
+};
+const getLikes = async () => {
+  const response = await fetch(`${involvementAPI}${apiId}/likes/`);
   return response.json();
 };
 
-// we can provide URL to search movies array by keywords
-const COMEDY_URL = 'https://api.tvmaze.com/search/shows?q=comedy';
-const ACTION_URL = 'https://api.tvmaze.com/search/shows?q=action';
-const DRAMA_URL = 'https://api.tvmaze.com/search/shows?q=drama';
-// we can see the data (array of movies) in browser py pasting: https://api.tvmaze.com/search/shows?q=comedy
 
-// we retrieve this data (array of movies) by calling getData function
-let comedyData = await getData(COMEDY_URL);
-let actionData = await getData(ACTION_URL);
-let dramaData = await getData(DRAMA_URL);
+/***/ }),
 
-// we might want to sort the retrieved data because sometimes keywords appear in the name or
-// location of the movie (instead of the genre)
-comedyData = comedyData.filter(el => el.show.genres.includes('Comedy'));
-actionData = actionData.filter(el => el.show.genres.includes('Action'));
-dramaData = dramaData.filter(el => el.show.genres.includes('Drama'));
+/***/ "./src/modules/comment-counter.js":
+/*!****************************************!*\
+  !*** ./src/modules/comment-counter.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-// we can create an array from retrieved data
-const data = [comedyData, actionData, dramaData];
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const commentCounter = () => {
+  const comments = document.querySelectorAll('.single-comment');
+  return comments.length;
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (commentCounter);
 
-// and we can display all movies (but of course in future we'll display depending on which
-// link the user clicked in navbar)
-data.forEach(dataByGenre => {
-  dataByGenre.forEach(movie => {
-    const container = document.querySelector('main');
+/***/ }),
+
+/***/ "./src/modules/comment-section.js":
+/*!****************************************!*\
+  !*** ./src/modules/comment-section.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _get_comments_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./get-comments.js */ "./src/modules/get-comments.js");
+/* harmony import */ var _render_comments_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./render-comments.js */ "./src/modules/render-comments.js");
+/* harmony import */ var _post_comment_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./post-comment.js */ "./src/modules/post-comment.js");
+/* harmony import */ var _show_error_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./show-error.js */ "./src/modules/show-error.js");
+
+
+
+
+const commentSection = async id => {
+  const popup = document.querySelector('.active-popup');
+  const commentSection = document.createElement('div');
+  const commentTitle = document.createElement('h2');
+  const commentHistory = document.createElement('ul');
+  const addComment = document.createElement('div');
+  const userName = document.createElement('input');
+  const nameError = document.createElement('span');
+  const userComment = document.createElement('textarea');
+  const commentError = document.createElement('span');
+  const commentBtn = document.createElement('button');
+  const commentData = await (0,_get_comments_js__WEBPACK_IMPORTED_MODULE_0__["default"])(id);
+  commentSection.classList.add('comment-section');
+  addComment.classList.add('add-comment');
+  commentHistory.classList.add('comment-history');
+  nameError.id = 'name-error';
+  commentError.id = 'comment-error';
+  commentTitle.textContent = 'Comments (0)';
+  userName.id = 'user-name';
+  userName.type = 'text';
+  userName.placeholder = 'Your name';
+  userComment.id = 'user-message';
+  userComment.placeholder = 'Your insights';
+  commentBtn.textContent = 'Comment';
+  commentBtn.addEventListener('click', async event => {
+    event.preventDefault();
+    const name = document.getElementById('user-name').value;
+    const message = document.getElementById('user-message').value;
+    if (name === '') {
+      (0,_show_error_js__WEBPACK_IMPORTED_MODULE_3__["default"])('name', 'Please, enter your name');
+    } else if (message === '') {
+      (0,_show_error_js__WEBPACK_IMPORTED_MODULE_3__["default"])('comment', 'Please, enter your message');
+    } else if (name && message !== '') {
+      await (0,_post_comment_js__WEBPACK_IMPORTED_MODULE_2__["default"])(id, name, message);
+      const commentData = await (0,_get_comments_js__WEBPACK_IMPORTED_MODULE_0__["default"])(id);
+      (0,_render_comments_js__WEBPACK_IMPORTED_MODULE_1__["default"])(commentData);
+      document.getElementById('user-name').value = '';
+      document.getElementById('user-message').value = '';
+    }
+  });
+  userName.addEventListener('keyup', () => {
+    nameError.classList.remove('show');
+  });
+  userComment.addEventListener('keyup', () => {
+    commentError.classList.remove('show');
+  });
+  addComment.append(userName, nameError, userComment, commentError, commentBtn);
+  commentSection.append(commentTitle, commentHistory, addComment);
+  popup.appendChild(commentSection);
+  (0,_render_comments_js__WEBPACK_IMPORTED_MODULE_1__["default"])(commentData);
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (commentSection);
+
+/***/ }),
+
+/***/ "./src/modules/display-all.js":
+/*!************************************!*\
+  !*** ./src/modules/display-all.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _get_data_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./get-data.js */ "./src/modules/get-data.js");
+/* harmony import */ var _display_movies_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./display-movies.js */ "./src/modules/display-movies.js");
+
+
+const displayAll = async () => {
+  // get data in all genres
+  const comedy = await (0,_get_data_js__WEBPACK_IMPORTED_MODULE_0__["default"])('comedy');
+  const action = await (0,_get_data_js__WEBPACK_IMPORTED_MODULE_0__["default"])('action');
+  const romance = await (0,_get_data_js__WEBPACK_IMPORTED_MODULE_0__["default"])('romance');
+  const drama = await (0,_get_data_js__WEBPACK_IMPORTED_MODULE_0__["default"])('drama');
+  const movieArray = [...comedy, ...action, ...romance, ...drama];
+  // sort alphabetically
+  movieArray.sort((a, b) => {
+    const x = a.show.name.toLowerCase();
+    const y = b.show.name.toLowerCase();
+    if (x < y) {
+      return -1;
+    }
+    if (x > y) {
+      return 1;
+    }
+    return 0;
+  });
+  // Calculate the total movie count
+  const totalMovieCount = movieArray.length;
+
+  // Display the total movie count next to the "All Shows" label
+  const allNavLink = document.getElementById('all');
+  allNavLink.innerHTML = `All Shows (${totalMovieCount})`;
+  // display them
+  (0,_display_movies_js__WEBPACK_IMPORTED_MODULE_1__["default"])(movieArray);
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (displayAll);
+
+/***/ }),
+
+/***/ "./src/modules/display-movies.js":
+/*!***************************************!*\
+  !*** ./src/modules/display-movies.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _assets_coming_soon_jpg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../assets/coming-soon.jpg */ "./src/assets/coming-soon.jpg");
+/* harmony import */ var _render_popup_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./render-popup.js */ "./src/modules/render-popup.js");
+/* harmony import */ var _likes_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./likes.js */ "./src/modules/likes.js");
+
+
+
+const displayMovies = async movieArray => {
+  const container = document.querySelector('main');
+  container.innerHTML = '';
+  if (!movieArray || movieArray.length === 0) {
+    const noMoviesMessage = document.createElement('p');
+    noMoviesMessage.textContent = 'No movies found for this category.';
+    container.appendChild(noMoviesMessage);
+    return;
+  }
+  for (let i = 0; i < movieArray.length; i += 1) {
+    const movie = movieArray[i];
+    const likeBtnId = `likeBtn_${movie.show.id}`;
     const movieCard = document.createElement('div');
     const movieTitle = document.createElement('h2');
     const movieImage = document.createElement('img');
+    const buttonsDiv = document.createElement('div');
+    const commentBtn = document.createElement('button');
+    const likeBtn = document.createElement('i');
+    likeBtn.classList.add('fa', 'fa-heart');
+    likeBtn.id = likeBtnId;
     movieTitle.textContent = movie.show.name;
     if (movie.show.image) {
       movieImage.src = movie.show.image.medium;
     } else {
-      // API provides images for most movies, but in case the image is not found we want to
-      // include some sample image saying "The poster will be added soon"
-      movieImage.src = _assets_bin_svgrepo_com_svg__WEBPACK_IMPORTED_MODULE_1__;
+      movieImage.src = _assets_coming_soon_jpg__WEBPACK_IMPORTED_MODULE_0__;
     }
+    commentBtn.textContent = 'Comments';
+    commentBtn.classList.add('comment-button');
+    movieCard.classList.add('card');
+    buttonsDiv.classList.add('commentLike-div');
+    movieImage.classList.add('movieImage');
     movieCard.appendChild(movieTitle);
     movieCard.appendChild(movieImage);
     container.appendChild(movieCard);
+    buttonsDiv.appendChild(commentBtn);
+    buttonsDiv.appendChild(likeBtn);
+    const likeCountSpan = document.createElement('span');
+    likeCountSpan.classList.add('like-count');
+    likeCountSpan.textContent = '';
+    buttonsDiv.appendChild(likeCountSpan);
+    movieCard.appendChild(buttonsDiv);
+    movieCard.appendChild(likeCountSpan);
+    likeBtn.setAttribute('data-show-id', movie.show.id);
+    (0,_likes_js__WEBPACK_IMPORTED_MODULE_2__["default"])(likeBtn, likeCountSpan, i);
+    commentBtn.addEventListener('click', () => {
+      const pageContent = document.querySelectorAll('header, main, footer');
+      pageContent.forEach(element => element.classList.add('hidden'));
+      document.body.classList.add('black');
+      (0,_render_popup_js__WEBPACK_IMPORTED_MODULE_1__["default"])(movie);
+    });
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (displayMovies);
+
+/***/ }),
+
+/***/ "./src/modules/get-comments.js":
+/*!*************************************!*\
+  !*** ./src/modules/get-comments.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const involvementAPI = 'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/';
+const apiId = 'IXNHPoRODtuVf9PEinhq';
+const getComments = async id => {
+  const response = await fetch(`${involvementAPI}${apiId}/comments?item_id=${id}`);
+  if (response.ok) {
+    return response.json();
+  }
+  return null;
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (getComments);
+
+/***/ }),
+
+/***/ "./src/modules/get-data.js":
+/*!*********************************!*\
+  !*** ./src/modules/get-data.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const getData = async query => {
+  const response = await fetch(`https://api.tvmaze.com/search/shows?q=${query}`, {
+    method: 'GET'
   });
-});
-__webpack_async_result__();
-} catch(e) { __webpack_async_result__(e); } }, 1);
+  return response.json();
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (getData);
+
+/***/ }),
+
+/***/ "./src/modules/likes.js":
+/*!******************************!*\
+  !*** ./src/modules/likes.js ***!
+  \******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./api.js */ "./src/modules/api.js");
+
+const updateLikeCount = (likeCount, showId) => {
+  (0,_api_js__WEBPACK_IMPORTED_MODULE_0__.getLikes)().then(likes => {
+    const showLikes = likes.find(item => item.item_id === showId);
+    likeCount.textContent = `${showLikes ? showLikes.likes : 0} Likes`;
+  }).catch(error => error);
+};
+function handleLikeButtonClick(likeBtn, likeCount) {
+  const showId = likeBtn.getAttribute('data-show-id');
+  updateLikeCount(likeCount, showId);
+  likeBtn.addEventListener('click', async () => {
+    await (0,_api_js__WEBPACK_IMPORTED_MODULE_0__.postLike)(showId);
+    // Pass the likeCount element as an argument
+    updateLikeCount(likeCount, showId);
+    likeBtn.style.color = 'red';
+  });
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (handleLikeButtonClick);
+
+/***/ }),
+
+/***/ "./src/modules/post-comment.js":
+/*!*************************************!*\
+  !*** ./src/modules/post-comment.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const involvementAPI = 'https://us-central1-involvement-api.cloudfunctions.net/capstoneApi/apps/';
+const apiId = 'IXNHPoRODtuVf9PEinhq';
+const postComment = async (id, name, message) => {
+  await fetch(`${involvementAPI}${apiId}/comments`, {
+    method: 'POST',
+    body: JSON.stringify({
+      item_id: id,
+      username: name,
+      comment: message
+    }),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8'
+    }
+  });
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (postComment);
+
+/***/ }),
+
+/***/ "./src/modules/render-comments.js":
+/*!****************************************!*\
+  !*** ./src/modules/render-comments.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _comment_counter_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./comment-counter.js */ "./src/modules/comment-counter.js");
+
+const renderComments = commentData => {
+  const commentHistory = document.querySelector('.comment-history');
+  const commentTitle = document.querySelector('.comment-section > h2');
+  let commentCount = 0;
+  commentHistory.innerHTML = '';
+  if (commentData) {
+    commentData.forEach(elem => {
+      const singleComment = document.createElement('li');
+      const date = document.createElement('span');
+      const name = document.createElement('span');
+      const message = document.createElement('span');
+      singleComment.classList.add('single-comment');
+      date.textContent = elem.creation_date.replaceAll('-', '/');
+      name.textContent = `${elem.username}:`;
+      message.textContent = elem.comment;
+      singleComment.append(date, name, message);
+      commentHistory.append(singleComment);
+    });
+    commentCount = (0,_comment_counter_js__WEBPACK_IMPORTED_MODULE_0__["default"])();
+    commentTitle.textContent = `Comments (${commentCount})`;
+  }
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (renderComments);
+
+/***/ }),
+
+/***/ "./src/modules/render-popup.js":
+/*!*************************************!*\
+  !*** ./src/modules/render-popup.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _assets_close_svg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../assets/close.svg */ "./src/assets/close.svg");
+/* harmony import */ var _assets_coming_soon_jpg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../assets/coming-soon.jpg */ "./src/assets/coming-soon.jpg");
+/* harmony import */ var _comment_section_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./comment-section.js */ "./src/modules/comment-section.js");
+
+
+
+const renderPopup = movieInfo => {
+  const movieCard = document.createElement('div');
+  const closeBtn = document.createElement('button');
+  const closeImg = document.createElement('img');
+  const title = document.createElement('h2');
+  const genres = document.createElement('ul');
+  const lang = document.createElement('p');
+  const image = document.createElement('img');
+  const premiere = document.createElement('p');
+  const score = document.createElement('p');
+  const infoDiv = document.createElement('div');
+  infoDiv.classList.add('info');
+  movieCard.classList.add('active-popup');
+  closeBtn.id = 'close-btn';
+  closeImg.src = _assets_close_svg__WEBPACK_IMPORTED_MODULE_0__;
+  title.textContent = movieInfo.show.name;
+  lang.textContent = movieInfo.show.language;
+  premiere.textContent = movieInfo.show.premiered;
+  score.textContent = movieInfo.score.toFixed(2);
+  score.classList.add('score');
+  for (let i = 0; i < movieInfo.show.genres.length; i += 1) {
+    const genre = document.createElement('li');
+    genre.textContent = movieInfo.show.genres[i];
+    genres.appendChild(genre);
+  }
+  if (movieInfo.show.image) {
+    image.src = movieInfo.show.image.original;
+  } else {
+    image.src = _assets_coming_soon_jpg__WEBPACK_IMPORTED_MODULE_1__;
+  }
+  closeBtn.appendChild(closeImg);
+  closeBtn.addEventListener('click', () => {
+    movieCard.remove();
+    // showContent();
+    const pageContent = document.querySelectorAll('header, main, footer');
+    pageContent.forEach(element => element.classList.remove('hidden'));
+    document.body.classList.remove('black');
+  });
+  infoDiv.append(title, score, genres, lang, premiere);
+  movieCard.append(closeBtn, image, infoDiv);
+  infoDiv.innerHTML += movieInfo.show.summary;
+  document.body.appendChild(movieCard);
+  (0,_comment_section_js__WEBPACK_IMPORTED_MODULE_2__["default"])(movieInfo.show.id);
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (renderPopup);
+
+/***/ }),
+
+/***/ "./src/modules/show-error.js":
+/*!***********************************!*\
+  !*** ./src/modules/show-error.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const showError = (type, message) => {
+  const errorElements = {
+    name: document.getElementById('name-error'),
+    comment: document.getElementById('comment-error')
+  };
+  const errorElement = errorElements[type];
+  errorElement.textContent = message;
+  errorElement.classList.add('show');
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (showError);
 
 /***/ }),
 
@@ -103,10 +524,17 @@ body {
   min-height: 100vh;
 }
 
+body.black {
+  background-color: #222121;
+}
+
 main {
-  display: flex;
-  flex-wrap: wrap;
-  flex-grow: 2;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
+  gap: 30px;
+  flex: 2;
+  justify-content: center;
+  margin-top: 5rem;
 }
 
 header {
@@ -114,7 +542,7 @@ header {
   display: flex;
   justify-content: space-between;
   padding: 1rem 1rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px #0000001a;
   position: sticky;
   top: 0;
   z-index: 999;
@@ -129,42 +557,251 @@ header {
 .logo {
   display: flex;
   width: auto;
-  height: 40px;
+  height: 50px;
 }
 
 .categories {
   display: flex;
+  margin-top: 0.8rem;
   gap: 3rem;
 }
 
-.categories .btn {
+.categories .navlink {
   list-style: none;
 }
 
-.categories .btn a {
+.categories .navlink a {
   color: black;
   text-decoration: none;
 }
 
-
-.btn:hover {
+.navlink :hover {
   background-color: aqua;
 }
-
-
 
 h1 {
   background-color: burlywood;
 }
 
+/*
 img {
   height: 400px;
+} */
+
+.movieImage {
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.movieImage:hover {
+  transform: scale(1.05);
+}
+
+.card {
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  padding: 1rem 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.comment-button {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease-in-out;
+}
+
+.comment-button:hover {
+  transform: scale(1.05);
+}
+
+.fa-heart {
+  margin-top: 5px;
+}
+
+.commentLike-div {
+  display: flex;
+  width: fit-content;
+  gap: 20px;
+  margin-top: 5px;
 }
 
 footer {
   padding: 2rem;
   background-color: turquoise;
-}`, "",{"version":3,"sources":["webpack://./src/style.css"],"names":[],"mappings":"AAAA;EACE,SAAS;EACT,UAAU;EACV,sBAAsB;AACxB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,iBAAiB;AACnB;;AAEA;EACE,aAAa;EACb,eAAe;EACf,YAAY;AACd;;AAEA;EACE,gBAAgB;EAChB,aAAa;EACb,8BAA8B;EAC9B,kBAAkB;EAClB,uCAAuC;EACvC,gBAAgB;EAChB,MAAM;EACN,YAAY;AACd;;AAEA;EACE,aAAa;EACb,uBAAuB;EACvB,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,WAAW;EACX,YAAY;AACd;;AAEA;EACE,aAAa;EACb,SAAS;AACX;;AAEA;EACE,gBAAgB;AAClB;;AAEA;EACE,YAAY;EACZ,qBAAqB;AACvB;;;AAGA;EACE,sBAAsB;AACxB;;;;AAIA;EACE,2BAA2B;AAC7B;;AAEA;EACE,aAAa;AACf;;AAEA;EACE,aAAa;EACb,2BAA2B;AAC7B","sourcesContent":["* {\n  margin: 0;\n  padding: 0;\n  box-sizing: border-box;\n}\n\nbody {\n  display: flex;\n  flex-direction: column;\n  min-height: 100vh;\n}\n\nmain {\n  display: flex;\n  flex-wrap: wrap;\n  flex-grow: 2;\n}\n\nheader {\n  background: #fff;\n  display: flex;\n  justify-content: space-between;\n  padding: 1rem 1rem;\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n  position: sticky;\n  top: 0;\n  z-index: 999;\n}\n\n.desktop-menu {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.logo {\n  display: flex;\n  width: auto;\n  height: 40px;\n}\n\n.categories {\n  display: flex;\n  gap: 3rem;\n}\n\n.categories .btn {\n  list-style: none;\n}\n\n.categories .btn a {\n  color: black;\n  text-decoration: none;\n}\n\n\n.btn:hover {\n  background-color: aqua;\n}\n\n\n\nh1 {\n  background-color: burlywood;\n}\n\nimg {\n  height: 400px;\n}\n\nfooter {\n  padding: 2rem;\n  background-color: turquoise;\n}"],"sourceRoot":""}]);
+}
+
+.active-popup {
+  background-color: #222121;
+  margin: 5% 15%;
+  padding: 4rem 5% 4%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  position: relative;
+  border: 2px solid rgb(163, 12, 12);
+}
+
+.active-popup * {
+  color: white;
+}
+
+.active-popup #close-btn {
+  all: unset;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+}
+
+.active-popup .info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  max-width: 300px;
+}
+
+.active-popup .info p:nth-child(4) {
+  width: 100%;
+}
+
+.active-popup > img {
+  height: auto;
+  width: 100%;
+  max-width: 300px;
+}
+
+.active-popup button img {
+  height: 2rem;
+  width: 2rem;
+}
+
+.active-popup h2,
+.active-popup .score {
+  font-size: 1.5rem;
+}
+
+.info ul {
+  list-style: none;
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+  width: 100%;
+}
+
+.info ul li {
+  background-color: #504e4e;
+  padding: 0.4rem 1rem;
+}
+
+.info ul li:hover {
+  background-color: #3b3838;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+.comment-section {
+  margin-top: 1rem;
+  width: 80%;
+}
+
+.comment-section h2 {
+  text-align: center;
+}
+
+.comment-section *::placeholder {
+  font-family: monospace;
+}
+
+.add-comment input,
+.add-comment textarea {
+  padding: 0.3rem;
+  color: #222121;
+  height: 1.5rem;
+}
+
+.add-comment {
+  margin: 1.5rem auto 0;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.add-comment textarea {
+  height: 4rem;
+}
+
+.add-comment button {
+  border: none;
+  background-color: #504e4e;
+  padding: 0.5rem;
+}
+
+.comment-section button:hover {
+  background-color: #3b3838;
+  cursor: pointer;
+}
+
+.comment-history {
+  margin: 1rem 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.single-comment {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #3b3838;
+  border-radius: 1rem;
+}
+
+.single-comment span:nth-of-type(1) {
+  color: #837e7e;
+  width: 100%;
+}
+
+.single-comment span:nth-of-type(2) {
+  font-size: 1.4rem;
+}
+
+.single-comment span:nth-of-type(3) {
+  font-style: italic;
+}
+
+#name-error,
+#comment-error {
+  opacity: 0;
+}
+
+#name-error.show,
+#comment-error.show {
+  opacity: 1;
+}
+
+.like-count {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  color: rgb(27, 72, 207);
+}
+`, "",{"version":3,"sources":["webpack://./src/style.css"],"names":[],"mappings":"AAAA;EACE,SAAS;EACT,UAAU;EACV,sBAAsB;AACxB;;AAEA;EACE,aAAa;EACb,sBAAsB;EACtB,iBAAiB;AACnB;;AAEA;EACE,yBAAyB;AAC3B;;AAEA;EACE,aAAa;EACb,+CAA+C;EAC/C,SAAS;EACT,OAAO;EACP,uBAAuB;EACvB,gBAAgB;AAClB;;AAEA;EACE,gBAAgB;EAChB,aAAa;EACb,8BAA8B;EAC9B,kBAAkB;EAClB,8BAA8B;EAC9B,gBAAgB;EAChB,MAAM;EACN,YAAY;AACd;;AAEA;EACE,aAAa;EACb,uBAAuB;EACvB,mBAAmB;AACrB;;AAEA;EACE,aAAa;EACb,WAAW;EACX,YAAY;AACd;;AAEA;EACE,aAAa;EACb,kBAAkB;EAClB,SAAS;AACX;;AAEA;EACE,gBAAgB;AAClB;;AAEA;EACE,YAAY;EACZ,qBAAqB;AACvB;;AAEA;EACE,sBAAsB;AACxB;;AAEA;EACE,2BAA2B;AAC7B;;AAEA;;;GAGG;;AAEH;EACE,gCAAgC;EAChC,eAAe;AACjB;;AAEA;EACE,sBAAsB;AACxB;;AAEA;EACE,aAAa;EACb,mBAAmB;EACnB,kBAAkB;EAClB,eAAe;EACf,uCAAuC;EACvC,gCAAgC;AAClC;;AAEA;EACE,oBAAoB;EACpB,kBAAkB;EAClB,YAAY;EACZ,eAAe;EACf,eAAe;EACf,gBAAgB;EAChB,gCAAgC;AAClC;;AAEA;EACE,sBAAsB;AACxB;;AAEA;EACE,eAAe;AACjB;;AAEA;EACE,aAAa;EACb,kBAAkB;EAClB,SAAS;EACT,eAAe;AACjB;;AAEA;EACE,aAAa;EACb,2BAA2B;AAC7B;;AAEA;EACE,yBAAyB;EACzB,cAAc;EACd,mBAAmB;EACnB,gBAAgB;EAChB,aAAa;EACb,sBAAsB;EACtB,mBAAmB;EACnB,SAAS;EACT,kBAAkB;EAClB,kCAAkC;AACpC;;AAEA;EACE,YAAY;AACd;;AAEA;EACE,UAAU;EACV,kBAAkB;EAClB,WAAW;EACX,SAAS;AACX;;AAEA;EACE,aAAa;EACb,eAAe;EACf,8BAA8B;EAC9B,SAAS;EACT,WAAW;EACX,gBAAgB;AAClB;;AAEA;EACE,WAAW;AACb;;AAEA;EACE,YAAY;EACZ,WAAW;EACX,gBAAgB;AAClB;;AAEA;EACE,YAAY;EACZ,WAAW;AACb;;AAEA;;EAEE,iBAAiB;AACnB;;AAEA;EACE,gBAAgB;EAChB,aAAa;EACb,uBAAuB;EACvB,eAAe;EACf,SAAS;EACT,WAAW;AACb;;AAEA;EACE,yBAAyB;EACzB,oBAAoB;AACtB;;AAEA;EACE,yBAAyB;EACzB,eAAe;AACjB;;AAEA;EACE,aAAa;AACf;;AAEA;EACE,gBAAgB;EAChB,UAAU;AACZ;;AAEA;EACE,kBAAkB;AACpB;;AAEA;EACE,sBAAsB;AACxB;;AAEA;;EAEE,eAAe;EACf,cAAc;EACd,cAAc;AAChB;;AAEA;EACE,qBAAqB;EACrB,UAAU;EACV,aAAa;EACb,sBAAsB;EACtB,WAAW;AACb;;AAEA;EACE,YAAY;AACd;;AAEA;EACE,YAAY;EACZ,yBAAyB;EACzB,eAAe;AACjB;;AAEA;EACE,yBAAyB;EACzB,eAAe;AACjB;;AAEA;EACE,qBAAqB;EACrB,aAAa;EACb,sBAAsB;EACtB,WAAW;AACb;;AAEA;EACE,aAAa;EACb,eAAe;EACf,qBAAqB;EACrB,WAAW;EACX,aAAa;EACb,yBAAyB;EACzB,mBAAmB;AACrB;;AAEA;EACE,cAAc;EACd,WAAW;AACb;;AAEA;EACE,iBAAiB;AACnB;;AAEA;EACE,kBAAkB;AACpB;;AAEA;;EAEE,UAAU;AACZ;;AAEA;;EAEE,UAAU;AACZ;;AAEA;EACE,cAAc;EACd,eAAe;EACf,eAAe;EACf,uBAAuB;AACzB","sourcesContent":["* {\r\n  margin: 0;\r\n  padding: 0;\r\n  box-sizing: border-box;\r\n}\r\n\r\nbody {\r\n  display: flex;\r\n  flex-direction: column;\r\n  min-height: 100vh;\r\n}\r\n\r\nbody.black {\r\n  background-color: #222121;\r\n}\r\n\r\nmain {\r\n  display: grid;\r\n  grid-template-columns: repeat(auto-fill, 300px);\r\n  gap: 30px;\r\n  flex: 2;\r\n  justify-content: center;\r\n  margin-top: 5rem;\r\n}\r\n\r\nheader {\r\n  background: #fff;\r\n  display: flex;\r\n  justify-content: space-between;\r\n  padding: 1rem 1rem;\r\n  box-shadow: 0 0 10px #0000001a;\r\n  position: sticky;\r\n  top: 0;\r\n  z-index: 999;\r\n}\r\n\r\n.desktop-menu {\r\n  display: flex;\r\n  justify-content: center;\r\n  align-items: center;\r\n}\r\n\r\n.logo {\r\n  display: flex;\r\n  width: auto;\r\n  height: 50px;\r\n}\r\n\r\n.categories {\r\n  display: flex;\r\n  margin-top: 0.8rem;\r\n  gap: 3rem;\r\n}\r\n\r\n.categories .navlink {\r\n  list-style: none;\r\n}\r\n\r\n.categories .navlink a {\r\n  color: black;\r\n  text-decoration: none;\r\n}\r\n\r\n.navlink :hover {\r\n  background-color: aqua;\r\n}\r\n\r\nh1 {\r\n  background-color: burlywood;\r\n}\r\n\r\n/*\r\nimg {\r\n  height: 400px;\r\n} */\r\n\r\n.movieImage {\r\n  transition: all 0.3s ease-in-out;\r\n  cursor: pointer;\r\n}\r\n\r\n.movieImage:hover {\r\n  transform: scale(1.05);\r\n}\r\n\r\n.card {\r\n  display: grid;\r\n  place-items: center;\r\n  border-radius: 8px;\r\n  padding: 1rem 0;\r\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\r\n  transition: all 0.3s ease-in-out;\r\n}\r\n\r\n.comment-button {\r\n  padding: 0.5rem 1rem;\r\n  border-radius: 8px;\r\n  border: none;\r\n  cursor: pointer;\r\n  font-size: 1rem;\r\n  font-weight: 500;\r\n  transition: all 0.3s ease-in-out;\r\n}\r\n\r\n.comment-button:hover {\r\n  transform: scale(1.05);\r\n}\r\n\r\n.fa-heart {\r\n  margin-top: 5px;\r\n}\r\n\r\n.commentLike-div {\r\n  display: flex;\r\n  width: fit-content;\r\n  gap: 20px;\r\n  margin-top: 5px;\r\n}\r\n\r\nfooter {\r\n  padding: 2rem;\r\n  background-color: turquoise;\r\n}\r\n\r\n.active-popup {\r\n  background-color: #222121;\r\n  margin: 5% 15%;\r\n  padding: 4rem 5% 4%;\r\n  max-width: 700px;\r\n  display: flex;\r\n  flex-direction: column;\r\n  align-items: center;\r\n  gap: 2rem;\r\n  position: relative;\r\n  border: 2px solid rgb(163, 12, 12);\r\n}\r\n\r\n.active-popup * {\r\n  color: white;\r\n}\r\n\r\n.active-popup #close-btn {\r\n  all: unset;\r\n  position: absolute;\r\n  right: 1rem;\r\n  top: 1rem;\r\n}\r\n\r\n.active-popup .info {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  justify-content: space-between;\r\n  gap: 1rem;\r\n  width: 100%;\r\n  max-width: 300px;\r\n}\r\n\r\n.active-popup .info p:nth-child(4) {\r\n  width: 100%;\r\n}\r\n\r\n.active-popup > img {\r\n  height: auto;\r\n  width: 100%;\r\n  max-width: 300px;\r\n}\r\n\r\n.active-popup button img {\r\n  height: 2rem;\r\n  width: 2rem;\r\n}\r\n\r\n.active-popup h2,\r\n.active-popup .score {\r\n  font-size: 1.5rem;\r\n}\r\n\r\n.info ul {\r\n  list-style: none;\r\n  display: flex;\r\n  align-items: flex-start;\r\n  flex-wrap: wrap;\r\n  gap: 1rem;\r\n  width: 100%;\r\n}\r\n\r\n.info ul li {\r\n  background-color: #504e4e;\r\n  padding: 0.4rem 1rem;\r\n}\r\n\r\n.info ul li:hover {\r\n  background-color: #3b3838;\r\n  cursor: pointer;\r\n}\r\n\r\n.hidden {\r\n  display: none;\r\n}\r\n\r\n.comment-section {\r\n  margin-top: 1rem;\r\n  width: 80%;\r\n}\r\n\r\n.comment-section h2 {\r\n  text-align: center;\r\n}\r\n\r\n.comment-section *::placeholder {\r\n  font-family: monospace;\r\n}\r\n\r\n.add-comment input,\r\n.add-comment textarea {\r\n  padding: 0.3rem;\r\n  color: #222121;\r\n  height: 1.5rem;\r\n}\r\n\r\n.add-comment {\r\n  margin: 1.5rem auto 0;\r\n  width: 60%;\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 0.5rem;\r\n}\r\n\r\n.add-comment textarea {\r\n  height: 4rem;\r\n}\r\n\r\n.add-comment button {\r\n  border: none;\r\n  background-color: #504e4e;\r\n  padding: 0.5rem;\r\n}\r\n\r\n.comment-section button:hover {\r\n  background-color: #3b3838;\r\n  cursor: pointer;\r\n}\r\n\r\n.comment-history {\r\n  margin: 1rem 0 1.5rem;\r\n  display: flex;\r\n  flex-direction: column;\r\n  gap: 0.8rem;\r\n}\r\n\r\n.single-comment {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n  align-items: baseline;\r\n  gap: 0.5rem;\r\n  padding: 1rem;\r\n  border: 1px solid #3b3838;\r\n  border-radius: 1rem;\r\n}\r\n\r\n.single-comment span:nth-of-type(1) {\r\n  color: #837e7e;\r\n  width: 100%;\r\n}\r\n\r\n.single-comment span:nth-of-type(2) {\r\n  font-size: 1.4rem;\r\n}\r\n\r\n.single-comment span:nth-of-type(3) {\r\n  font-style: italic;\r\n}\r\n\r\n#name-error,\r\n#comment-error {\r\n  opacity: 0;\r\n}\r\n\r\n#name-error.show,\r\n#comment-error.show {\r\n  opacity: 1;\r\n}\r\n\r\n.like-count {\r\n  display: block;\r\n  margin-top: 5px;\r\n  font-size: 12px;\r\n  color: rgb(27, 72, 207);\r\n}\r\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -611,13 +1248,23 @@ module.exports = styleTagTransform;
 
 /***/ }),
 
-/***/ "./src/assets/bin-svgrepo-com.svg":
-/*!****************************************!*\
-  !*** ./src/assets/bin-svgrepo-com.svg ***!
-  \****************************************/
+/***/ "./src/assets/close.svg":
+/*!******************************!*\
+  !*** ./src/assets/close.svg ***!
+  \******************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "bin-svgrepo-com.svg";
+module.exports = __webpack_require__.p + "close.svg";
+
+/***/ }),
+
+/***/ "./src/assets/coming-soon.jpg":
+/*!************************************!*\
+  !*** ./src/assets/coming-soon.jpg ***!
+  \************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "coming-soon.jpg";
 
 /***/ })
 
@@ -648,75 +1295,6 @@ module.exports = __webpack_require__.p + "bin-svgrepo-com.svg";
 /******/ 	}
 /******/ 	
 /************************************************************************/
-/******/ 	/* webpack/runtime/async module */
-/******/ 	(() => {
-/******/ 		var webpackQueues = typeof Symbol === "function" ? Symbol("webpack queues") : "__webpack_queues__";
-/******/ 		var webpackExports = typeof Symbol === "function" ? Symbol("webpack exports") : "__webpack_exports__";
-/******/ 		var webpackError = typeof Symbol === "function" ? Symbol("webpack error") : "__webpack_error__";
-/******/ 		var resolveQueue = (queue) => {
-/******/ 			if(queue && queue.d < 1) {
-/******/ 				queue.d = 1;
-/******/ 				queue.forEach((fn) => (fn.r--));
-/******/ 				queue.forEach((fn) => (fn.r-- ? fn.r++ : fn()));
-/******/ 			}
-/******/ 		}
-/******/ 		var wrapDeps = (deps) => (deps.map((dep) => {
-/******/ 			if(dep !== null && typeof dep === "object") {
-/******/ 				if(dep[webpackQueues]) return dep;
-/******/ 				if(dep.then) {
-/******/ 					var queue = [];
-/******/ 					queue.d = 0;
-/******/ 					dep.then((r) => {
-/******/ 						obj[webpackExports] = r;
-/******/ 						resolveQueue(queue);
-/******/ 					}, (e) => {
-/******/ 						obj[webpackError] = e;
-/******/ 						resolveQueue(queue);
-/******/ 					});
-/******/ 					var obj = {};
-/******/ 					obj[webpackQueues] = (fn) => (fn(queue));
-/******/ 					return obj;
-/******/ 				}
-/******/ 			}
-/******/ 			var ret = {};
-/******/ 			ret[webpackQueues] = x => {};
-/******/ 			ret[webpackExports] = dep;
-/******/ 			return ret;
-/******/ 		}));
-/******/ 		__webpack_require__.a = (module, body, hasAwait) => {
-/******/ 			var queue;
-/******/ 			hasAwait && ((queue = []).d = -1);
-/******/ 			var depQueues = new Set();
-/******/ 			var exports = module.exports;
-/******/ 			var currentDeps;
-/******/ 			var outerResolve;
-/******/ 			var reject;
-/******/ 			var promise = new Promise((resolve, rej) => {
-/******/ 				reject = rej;
-/******/ 				outerResolve = resolve;
-/******/ 			});
-/******/ 			promise[webpackExports] = exports;
-/******/ 			promise[webpackQueues] = (fn) => (queue && fn(queue), depQueues.forEach(fn), promise["catch"](x => {}));
-/******/ 			module.exports = promise;
-/******/ 			body((deps) => {
-/******/ 				currentDeps = wrapDeps(deps);
-/******/ 				var fn;
-/******/ 				var getResult = () => (currentDeps.map((d) => {
-/******/ 					if(d[webpackError]) throw d[webpackError];
-/******/ 					return d[webpackExports];
-/******/ 				}))
-/******/ 				var promise = new Promise((resolve) => {
-/******/ 					fn = () => (resolve(getResult));
-/******/ 					fn.r = 0;
-/******/ 					var fnQueue = (q) => (q !== queue && !depQueues.has(q) && (depQueues.add(q), q && !q.d && (fn.r++, q.push(fn))));
-/******/ 					currentDeps.map((dep) => (dep[webpackQueues](fnQueue)));
-/******/ 				});
-/******/ 				return fn.r ? promise : getResult();
-/******/ 			}, (err) => ((err ? reject(promise[webpackError] = err) : outerResolve(exports)), resolveQueue(queue)));
-/******/ 			queue && queue.d < 0 && (queue.d = 0);
-/******/ 		};
-/******/ 	})();
-/******/ 	
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
@@ -798,12 +1376,62 @@ module.exports = __webpack_require__.p + "bin-svgrepo-com.svg";
 /******/ 	})();
 /******/ 	
 /************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module used 'module' so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/index.js");
-/******/ 	
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+/*!**********************!*\
+  !*** ./src/index.js ***!
+  \**********************/
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./style.css */ "./src/style.css");
+/* harmony import */ var _modules_display_movies_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/display-movies.js */ "./src/modules/display-movies.js");
+/* harmony import */ var _modules_get_data_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/get-data.js */ "./src/modules/get-data.js");
+/* harmony import */ var _modules_display_all_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/display-all.js */ "./src/modules/display-all.js");
+/* harmony import */ var _item_counter_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./item-counter.js */ "./src/item-counter.js");
+
+
+
+
+
+const navLinks = document.querySelectorAll('.navlink');
+const input = document.getElementById('input');
+const searchBtn = document.getElementById('search-btn');
+document.addEventListener('DOMContentLoaded', async () => {
+  (0,_modules_display_all_js__WEBPACK_IMPORTED_MODULE_3__["default"])();
+});
+searchBtn.addEventListener('click', async () => {
+  const movieArray = await (0,_modules_get_data_js__WEBPACK_IMPORTED_MODULE_2__["default"])(input.value);
+  (0,_modules_display_movies_js__WEBPACK_IMPORTED_MODULE_1__["default"])(movieArray);
+  (0,_item_counter_js__WEBPACK_IMPORTED_MODULE_4__["default"])();
+});
+navLinks.forEach(link => {
+  link.addEventListener('click', async () => {
+    if (link.id === 'all') {
+      (0,_modules_display_all_js__WEBPACK_IMPORTED_MODULE_3__["default"])();
+    } else {
+      let movieArray = await (0,_modules_get_data_js__WEBPACK_IMPORTED_MODULE_2__["default"])(link.id);
+      movieArray = movieArray.filter(el => el.show.genres.includes(link.id.charAt(0).toUpperCase() + link.id.slice(1)));
+      (0,_modules_display_movies_js__WEBPACK_IMPORTED_MODULE_1__["default"])(movieArray);
+      const numberItmes = document.getElementById('item-counter');
+      numberItmes.parentElement.classList.add('hidden');
+    }
+  });
+});
+navLinks.forEach(async link => {
+  if (link.id !== 'all') {
+    let movieArray = await (0,_modules_get_data_js__WEBPACK_IMPORTED_MODULE_2__["default"])(link.id);
+    movieArray = movieArray.filter(el => el.show.genres.includes(link.id.charAt(0).toUpperCase() + link.id.slice(1)));
+
+    // Calculate the movie count by genre
+    const movieCount = movieArray.length;
+    const counter = link.childNodes[0].childNodes[1];
+
+    // Display the movie count next to the each navlink
+    counter.textContent = ` (${movieCount})`;
+  }
+});
+})();
+
 /******/ })()
 ;
 //# sourceMappingURL=main.js.map

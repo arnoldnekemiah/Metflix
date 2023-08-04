@@ -1,31 +1,23 @@
-import { involvementApi, apiId } from './api.js';
+import { postLike, getLikes } from './api.js';
 
-// eslint-disable-next-line camelcase
-const addLike = async (item_id) => {
-  try {
-    const response = await fetch(`${involvementApi}/apps/${apiId}/likes`, {
-      method: 'POST',
-      body: JSON.stringify({
-        item_id,
-      }),
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
-    if (response.ok) {
-      return true; // Indicate success
-    }
-    const responseText = await response.text();
-    return response('Successfully created, like:', responseText);
-  } catch (error) {
-    return error('Error creating like:', error);
-  }
+const updateLikeCount = (likeCount, showId) => {
+  getLikes()
+    .then((likes) => {
+      const showLikes = likes.find((item) => item.item_id === showId);
+      likeCount.textContent = `${showLikes ? showLikes.likes : 0} Likes`;
+    })
+    .catch((error) => error);
 };
 
-const getLikes = async () => {
-  const response = await fetch(`${involvementApi}/apps/${apiId}/likes`);
-  return response.json();
-};
+function handleLikeButtonClick(likeBtn, likeCount) {
+  const showId = likeBtn.getAttribute('data-show-id');
+  updateLikeCount(likeCount, showId);
+  likeBtn.addEventListener('click', async () => {
+    await postLike(showId);
+    // Pass the likeCount element as an argument
+    updateLikeCount(likeCount, showId);
+    likeBtn.style.color = 'red';
+  });
+}
 
-export { addLike, getLikes };
+export default handleLikeButtonClick;
