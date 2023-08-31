@@ -184,7 +184,7 @@ To deploy modified version of this repo run the following command:
 
 - GitHub: [@arnoldnekemiah](https://github.com/arnoldnekemiah)
 - Twitter: [@arnoldikonde](https://twitter.com/arnoldikonde)
-- LinkedIn: [Ikonde (Arnold) Nekemiah](https://www.linkedin.com/in/ikonde-nekemiah-b050621ab/)
+- LinkedIn: [Ikonde (Arnold) Nekemiah](https://www.linkedin.com/in/arnoldnekemiah/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
